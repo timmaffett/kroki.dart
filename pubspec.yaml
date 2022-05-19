@@ -1,6 +1,6 @@
 name: kroki
 description: Class for accessing Kroki.io web service for diagram syntax to svg rendering.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/timmaffett/kroki.dart
 
 environment:
