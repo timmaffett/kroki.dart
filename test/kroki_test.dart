@@ -1,17 +1,32 @@
+import 'dart:async';
+
 import 'package:kroki/kroki.dart';
 import 'package:test/test.dart';
 
 void main() {
+
+  const List<KrokiExample> krokitests = KrokiTests.tests;
+  final Kroki kroki = Kroki();
+
+
   group('A group of tests', () {
-    //final awesome = Awesome();
 
     setUp(() {
       // Additional setup goes here.
     });
 
-    test('First Test', () {
-      //expect(awesome.isAwesome, isTrue);
-    });
+    int count = 0;
+    for(final krokitest in krokitests) {
+      test('Convert example $count endpoint ${krokitest.endPoint}', () async {
+          int thisTestNum = count;
+          KrokiExample kt = krokitest;
+          final svg = await kroki.convertDiagram(kt.endPoint.toLowerCase(), kt.exampleSource);
+
+          expect(svg, isNotEmpty, reason:'SVG is empty');
+          expect(svg.startsWith('ERROR'), isFalse, reason:'Test[$thisTestNum] Name:`${kt.name}` Endpoint `${kt.endPoint}` SVG starts with error "${svg.substring(0,svg.length>100?100:svg.length)}${svg.length>100?'...':''}"' );
+      });
+      count++;
+    }
   });
 }
 
@@ -71,13 +86,13 @@ class KrokiExample {
   final String exampleSource;
   final String exampleUri;
   final String endPoint;
-  KrokiExample(this.name, this.shortname, this.exampleSource, this.exampleUri,
+  const KrokiExample(this.name, this.shortname, this.exampleSource, this.exampleUri,
       this.endPoint);
 }
 
-class KrokiTest {
-  void makeTest() {
-    List<KrokiExample> test = [
+class KrokiTests {
+
+  static const List<KrokiExample> tests = [
       KrokiExample(
           'Block diagram',
           'BlockDiag',
@@ -360,7 +375,7 @@ box same width previous.e.x - C2.w.x \
 ''',
           'GET https://kroki.io/pikchr/svg/eNrlU8tygjAU3ecr7rBRW80gCLSd6So_4Ad0E2KQTJE4SRD8-14QRLTT6bIzZZX7Ouck92AFLyS8g09fSKaKAo91rpwkhSplrXbw1NYiIpQR2Ogx34NMuT42fIcDRyNPSleWYqgqS7gxuh4n1t59JnjIbB4ysTeeQw-4g52ybs6CJdssIJdIVe4h9CEz-gAsuJ-PesShDk4DC0Hk-khYuH2DEX12A79Zsvgb-LgHM2qfuz4XbqkkLLqFimZT1vjCur3QklQ3CN1BsJCeVyygZ_gggB8-tcthjnBU0mbFfFrTZvE8bGFowh5at2pxJ09DsZbWgc6gHeo7U5mrcoeZPu5W6zcilkGWgcMiCF1oA3vDz50uyw-yV3HdJyqBFb5dq2UiwcpWw7WvlFOaVy5EJojnTFV-eiim0J3oACUVHMUiIbXEyyR3lZGQGl6KHLeQ6lOHfG0qycR5WAppIg5gdYU6ujv_LbuNmeQHAz56JPm9RZKJQ9ZoBLbuf73_65MvEC93wQ==',
           'pikchr'),
-      KrokiExample(
+KrokiExample(
           'Entity Relationship Diagram',
           'Erd',
           r'''[Person]
@@ -376,21 +391,14 @@ state
 country
 
 Person *--1 Location
-GET https://kroki.io/erd/svg/eNrjig5ILSrOz4vl0spLzE3lykjNTM8o4SqHUNpJmUUlGfE5-cmJJZn5efGZKVxc0T5QHlALkJ-cWVLJVVySWJLKlZxfmldSVMnFBTFSQUtX11ABppoLAK1IJCs=
-Person
-name
-height
-weight
-birth_location_id
-Location
-id
-city
-state
-country
-1
-0..N
-Hand-drawn like diagrams#
-Excalidraw
+''',
+'GET https://kroki.io/erd/svg/eNrjig5ILSrOz4vl0spLzE3lykjNTM8o4SqHUNpJmUUlGfE5-cmJJZn5efGZKVxc0T5QHlALkJ-cWVLJVVySWJLKlZxfmldSVMnFBTFSQUtX11ABppoLAK1IJCs=',
+'erd'),
+
+KrokiExample(
+          'Hand-drawn like diagrams',
+          'Excalidraw',
+          r'''
 {
   "type": "excalidraw",
   "version": 2,
@@ -1961,7 +1969,7 @@ r''',
 (draw-box (text "length" [:math] [:sub 2]) {:span 4})
 (draw-gap "Unknown bytes" {:min-label-columns 6})
 (draw-bottom)
-r''',
+''',
           'GET https://kroki.io/bytefield/svg/eNqllcuOmzAUhvd5iiPPJiyQgDDMDNt20327QixMMBfF2BRMQzri3WsM4T7MpYkUC_P59_F_znGOIYmwEEUJbhDrcUEIg1c3SikF9ICNKMIGarTDcYbdCKX8OnJRtM3lKbtMqcDYos43PN8TR3hDqypySkaO2MFj9NRyCmQQFvgqD8CrXKc4IFRPCA5JcQDwylzuoCZ9-XhUZMBrOApSi-4FeG6GRdLqcyb0Mv1LwLQaX5Mzarn6cQNeSM0SHl4bcBOSxokA0260eRQFybggYTAJ4ZKyEHARl2MEZ06rjPVMqQ3z6zPAI6BS4EKg96if9Y_v-9AJkLjlZB-yALWx7kOmVMJ3iEkn9UIWhfksvZiabNSmORaXtnj3_GSd7BdMwOt9tpsR9rVtpa7-tI1cdgaAyqW21OyWrUWNoVgXkgmpdSWrsme36afhKGs1w8KVqBENtf2WaOuwdLoX3aZldPak_BfW9mc2us8ZtSVZg-e5OcUpu9fytStTRNtBMpMCdxofEBxNS0P-yq5uS_-t8J0xdk-OtR6lRSnWK3lJfoP3B8sWc-SiEzj99-S3vbAt3uIL-YJQLJtqtsFqBwOMlap68Y7E4HdPUrw4imrwjd6WGbKfDAteBuBeqdrs2TINGwZ_tT32Y1ife0pYLBLUX1--HMsqAHO8t1Yq9izSz8vEOAf0rSKAZU9QznPIecoEBDdB2stgIs5SCspOeWu0_bpn0Mn51LlZlS2jRQkXaOfgH5U5V2Qh89U0WPtp-B8VlYVf7ML4lfXWSyhLWX9Hd38uJTiTfYXgmXb4BwBAgK8=',
           'bytefield'),
       KrokiExample(
@@ -2750,6 +2758,6 @@ validity
 ''',
           'GET https://kroki.io/umlet/svg/eNrdWUFv2jAYvedXRBym7lBiJ05ChEkvU7Ve1047VFNlEgNZQ4IcU8q_n51ip5SujRHNoAcwmCTye9_3vvfZWPjicZ7bD5RVWVmMerAPejYtkjLNiumo9_Pm8nzQu4jxcp5TfpdmZMrIPMY0p3Na8Bjz9YLGSTnv1xf0N_P9Malo_wfNCRdPxU59FU7KkonHEk6rGD_GoRdh5zHG6xgG2FnHeBW7noudVYxnsRsg7Mxi7GzdtCAFze8I5ywbL-VMzkdfcj48t1YzWpxViywVQGhRlWzUYyUXd_W-Ws44L5N7--lX7Ow8BJM0zeRCydY0DODQRWgoRw8NQ_UeipW9fgd2NC_vEZQsKy4mLwWy_Fqu8x8kDSKwIckNgGIJKJJAG47aI-aMFNWCMLHAa7HQRF4xmpC8ogdA3ColfIUWhgotDBRc6IVGOUEmnDL7DIJK5IC9ZxIgMIQADINADZL0Q4X_rch7SHGBXM0FUFygVqFfkYwfSfg3iL9nYmDrt4C7ngaOPn_KP0OryyD0FFzfrAoyWnHCDELuAlnUIJRDV4BDBdiLFOBoT7wLspSBaos2rNG6BwLbtoTrCo7A509nFCi78nU2Q6QKuKGpbxVwns1puTTIbV8ktrBvMYigR6jDDNeSFsJSJOgUr53NgARj3CK_oQ9qUatRToWgM-sKgSIg0vgHGj9ohZ8kCV1wa1wSedHUXpCqss7PLbEEtnZsJpYjQmEn4mcrLR313dTfXxUMZ8uu9OJrl4fPzM4340rnyq1kiRZToZpxWd7T9LdJu_uUJ-I1qD8NQFc1Q3d9rtaLKzcHTxxEe3NQlNycBxdGtVgiPXQlm6BxRl_rRluF34oGRv-IJN6WzSnZx0DLwdMUIHdPOYh2aJlzu5zYFSUsmRl0ClCKQLy7oPO2qNn5-GbdvsJtoHmvVrp7WGu4mTFKf5F169L3TPYn2Ri10DbUYINXwuu21DZJ7ZeGeBxW14IBBHYZ0E1BuxqfzKjYwuv63rQD9a5nI3LZDYzzrLi3czJfHBU9724VYNhsBj-_JBrbR_secEhJWI3hX307Rfiety980esWPJusGwpOyOvrg70XR5vIrCCYO56wuvBwhmcGE4IdmOHHwfT_F8ymedUwBx8HM-gYJto9oQ4HeyWtdftA8sxka-JFMnm97nYkTY2C_r41qjZtq4aa8fVx1eerQjymrSXDIz--c7b_o7P-At8zCQE=',
           'umlet'),
-    ];
-  }
+  ];
+
 }
