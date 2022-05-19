@@ -1,16 +1,19 @@
 // Copyright (c) 2022, Tim Maffett.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
+library kroki;
+
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
+import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 /// `KrokiDiagramEndpoints`
-/// Contains a list [supportedEndpoints] and constants for all 
+/// Contains a list [supportedEndpoints] and constants for all
 /// Kroki diagram endpoints.
-/// 
-/// Support Diagram Types by Endpoint Name
+///
+/// Support Diagram Types by Endpoint Name and links to homepages.
 /// `BlockDiag️`    https://github.com/blockdiag/blockdiag
 /// `BPMN`        https://github.com/bpmn-io/bpmn-js
 /// `Bytefield️`      https://github.com/Deep-Symmetry/bytefield-svg/
@@ -34,9 +37,9 @@ import 'package:http/http.dart' as http;
 /// `Vega️`          https://github.com/vega/vega
 /// `Vega-Lite️`     https://github.com/vega/vega-lite
 /// `WaveDrom`       https://github.com/wavedrom/wavedrom
-/// 
+///
 class KrokiDiagramEndpoints {
-  static const String blockdiag = 'blockdiag';  
+  static const String blockdiag = 'blockdiag';
   static const String seqdiag = 'seqdiag';
   static const String actdiag = 'actdiag';
   static const String nwdiag = 'nwdiag';
@@ -60,34 +63,35 @@ class KrokiDiagramEndpoints {
   static const String structurizr = 'structurizr';
   static const String umlet = 'umlet';
   static const String dot = 'dot';
-  //static const String diagramsDotNet = 'diagrams.net'; // don't know endpoint name
+  static const String diagramsDotNet = 'diagramsnet';
 
   static const List<String> supportedEndpoints = [
-      blockdiag,
-      seqdiag,
-      actdiag,
-      nwdiag,
-      packetdiag,
-      rackdiag,
-      vega,
-      vegalite,
-      excalidraw,
-      bpmn,
-      ditaa,
-      erd,
-      pikchr,
-      plantuml,
-      graphviz,
-      bytefield,
-      wavedrom,
-      c4plantuml,
-      svgbob,
-      mermaid,
-      nomnoml,
-      structurizr,
-      umlet,
-      //diagramsDotNet,
-    ];
+    blockdiag,
+    seqdiag,   //
+    actdiag,   //
+    nwdiag,    // these all other types for `blockdiag` 
+    packetdiag,//
+    rackdiag,  //
+    vega,
+    vegalite,
+    excalidraw,
+    bpmn,
+    ditaa,
+    erd,
+    pikchr,
+    plantuml,
+    graphviz,
+    dot,   // alternate for `graphviz`
+    bytefield,
+    wavedrom,
+    c4plantuml,
+    svgbob,
+    mermaid,
+    nomnoml,
+    structurizr,
+    umlet,
+    diagramsDotNet,  // endpoint not on public kroki.io site as of 5/19/22
+  ];
 }
 
 /// The [Kroki] class provides the [convertDiagram] method which will
@@ -107,23 +111,42 @@ class Kroki {
   /// of the Kroki web service.
   String krokiApiUrl;
 
+  /// Defaults to false, will cache all diagram request results so that we don't
+  /// ask endpoint to keep converting an unchanged file. SIMPLE caching, need
+  /// to use redis for real world use.  This is used for live editing markdown
+  /// example, etc. - where we repeatedly convert the all diagrams regardless when
+  /// markdown changes.
+  bool cacheRequests;
+
+  /// Rudimentary cache to prevent hammering kroki.io with same requests,
+  /// replace with Redis for real world use.
+  Map<String, String> cache = {};
+
   Kroki({
     http.Client? client,
-    this.krokiApiUrl= 'https://kroki.io/',
+    this.krokiApiUrl = 'https://kroki.io/',
+    this.cacheRequests = false,
   }) : _client = client ?? http.Client();
 
   String? _getEndpointFromDiagramType(String diagramType) {
-    if(KrokiDiagramEndpoints.supportedEndpoints.contains(diagramType.toLowerCase())) {
-      return diagramType.toLowerCase();
+    diagramType = diagramType.toLowerCase();
+    if (KrokiDiagramEndpoints.supportedEndpoints
+        .contains(diagramType)) {
+      return diagramType;
     }
     return null;
   }
 
- Future<String> convertDiagram(
+  Future<String> convertDiagram(
       String diagramType, String diagramSource) async {
-    final String? endpoint =
-        _getEndpointFromDiagramType(diagramType);
-    if(endpoint==null) return 'Unsupported Kroki Diagram Endpoint "$diagramType"';
+    final String? endpoint = _getEndpointFromDiagramType(diagramType);
+    if (endpoint == null)
+      return 'Unsupported Kroki Diagram Endpoint "$diagramType"';
+
+    final String md5 = cacheRequests ? generateMd5(diagramSource) : '';
+    if (cacheRequests && cache.containsKey(md5)) {
+      return cache[md5]!;
+    }
 
     final stringBytes = utf8.encode(diagramSource);
     final gzipBytes = ZLibEncoder().encode(stringBytes, level: 9);
@@ -133,16 +156,20 @@ class Kroki {
 
     return await _client.get(theuri).then((http.Response response) {
       if (response.statusCode == 404) {
-        //throw Exception('status code 404 contentNotFound');
-        return 'Kroki returned status code 404 contentNotFound for endpoint $diagramType';
+        return 'ERROR - Kroki returned status code 404 contentNotFound for endpoint $diagramType';
       } else if (response.statusCode == 403) {
-        //throw Exception('status code 403 rateLimitExceeded');
-        return 'Kroki returned status code 403 rateLimitExceeded for endpoint $diagramType';
+        return 'ERROR - Kroki returned status code 403 rateLimitExceeded for endpoint $diagramType';
       } else if (response.statusCode != 200) {
-        //throw Exception('status code ${response.statusCode} error unknown');
-        return 'Kroki returned status code ${response.statusCode} error unknown for endpoint $diagramType';
+        return 'ERROR - Kroki returned status code ${response.statusCode} error unknown for endpoint $diagramType';
+      }
+      if (cacheRequests) {
+        cache[md5] = response.body;
       }
       return response.body;
     });
+  }
+
+  String generateMd5(String input) {
+    return md5.convert(utf8.encode(input)).toString();
   }
 }

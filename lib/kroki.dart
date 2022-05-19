@@ -3,3 +3,4 @@
 library kroki;
 
 export 'src/kroki_base.dart';
+export 'src/kroki_sample_data.dart';
