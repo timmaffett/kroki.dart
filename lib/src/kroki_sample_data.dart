@@ -2780,7 +2780,5 @@ DiagramSample('Connected Servers - SvgBob',
                                 /::::/ |__|
 '''),
 */
-
   ];
 }
-

@@ -1,29 +1,27 @@
-import 'dart:async';
-
 import 'package:kroki/kroki.dart';
 import 'package:test/test.dart';
 
 void main() {
-
   const List<KrokiExample> krokitests = KrokiTests.tests;
   final Kroki kroki = Kroki();
 
-
   group('A group of tests', () {
-
     setUp(() {
       // Additional setup goes here.
     });
 
     int count = 0;
-    for(final krokitest in krokitests) {
+    for (final krokitest in krokitests) {
       test('Convert example $count endpoint ${krokitest.endPoint}', () async {
-          int thisTestNum = count;
-          KrokiExample kt = krokitest;
-          final svg = await kroki.convertDiagram(kt.endPoint.toLowerCase(), kt.exampleSource);
+        int thisTestNum = count;
+        KrokiExample kt = krokitest;
+        final svg = await kroki.convertDiagram(
+            kt.endPoint.toLowerCase(), kt.exampleSource);
 
-          expect(svg, isNotEmpty, reason:'SVG is empty');
-          expect(svg.startsWith('ERROR'), isFalse, reason:'Test[$thisTestNum] Name:`${kt.name}` Endpoint `${kt.endPoint}` SVG starts with error "${svg.substring(0,svg.length>100?100:svg.length)}${svg.length>100?'...':''}"' );
+        expect(svg, isNotEmpty, reason: 'SVG is empty');
+        expect(svg.startsWith('ERROR'), isFalse,
+            reason:
+                'Test[$thisTestNum] Name:`${kt.name}` Endpoint `${kt.endPoint}` SVG starts with error "${svg.substring(0, svg.length > 100 ? 100 : svg.length)}${svg.length > 100 ? '...' : ''}"');
       });
       count++;
     }
@@ -86,17 +84,16 @@ class KrokiExample {
   final String exampleSource;
   final String exampleUri;
   final String endPoint;
-  const KrokiExample(this.name, this.shortname, this.exampleSource, this.exampleUri,
-      this.endPoint);
+  const KrokiExample(this.name, this.shortname, this.exampleSource,
+      this.exampleUri, this.endPoint);
 }
 
 class KrokiTests {
-
   static const List<KrokiExample> tests = [
-      KrokiExample(
-          'Block diagram',
-          'BlockDiag',
-          r'''blockdiag {
+    KrokiExample(
+        'Block diagram',
+        'BlockDiag',
+        r'''blockdiag {
   blockdiag -> generates -> "block-diagrams";
   blockdiag -> is -> "very easy!";
 
@@ -105,12 +102,12 @@ class KrokiTests {
   "very easy!" [color = "orange"];
 }
 ''',
-          'GET https://kroki.io/blockdiag/svg/eNpdzEEKgzAQheF9TjFm7wmKXkRcTO0jBGNGJqUllN5dowuDy8f_8cwzyDS_PDv6GbpG25NDhPIbqQx7pLY05SXZxw37U32gmcApN7uoyTBJEKWOrFMgZoQgXzvuN_fniq4-zqepfqsuytGhiL_ZAMihQIU=',
-          'blockdiag'),
-      KrokiExample(
-          'Sequence diagram',
-          'SeqDiag',
-          r'''seqdiag {
+        'GET https://kroki.io/blockdiag/svg/eNpdzEEKgzAQheF9TjFm7wmKXkRcTO0jBGNGJqUllN5dowuDy8f_8cwzyDS_PDv6GbpG25NDhPIbqQx7pLY05SXZxw37U32gmcApN7uoyTBJEKWOrFMgZoQgXzvuN_fniq4-zqepfqsuytGhiL_ZAMihQIU=',
+        'blockdiag'),
+    KrokiExample(
+        'Sequence diagram',
+        'SeqDiag',
+        r'''seqdiag {
   browser  -> webserver [label = "GET /index.html"];
   browser <-- webserver;
   browser  -> webserver [label = "POST /blog/comment"];
@@ -118,12 +115,12 @@ class KrokiTests {
   webserver <-- database;
   browser <-- webserver;
 }''',
-          'GET https://kroki.io/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==',
-          'seqdiag'),
-      KrokiExample(
-          'Activity diagram',
-          'ActDiag',
-          r'''actdiag {
+        'GET https://kroki.io/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==',
+        'seqdiag'),
+    KrokiExample(
+        'Activity diagram',
+        'ActDiag',
+        r'''actdiag {
   write -> convert -> image
 
   lane user {
@@ -135,12 +132,12 @@ class KrokiTests {
     convert [label = "Convert reST to Image"];
   }
 }''',
-          'GET https://kroki.io/actdiag/svg/eNrjquZSUCgvyixJVdC1U0jOzytLLSoBMTNzE9NTuYCSOYl5qQqlxalFCiClCiCBpNQcBVsFpVCgoBJEDGJCNFwqHMjPzEtXKEoNDlGKtYYoAhuJpMg9tUQhJTMxvSgxV8HT19HdFaKyFmZpYnIJSBpmL8xxCAOcoSIgWxRK8hU8QRbADKnlAgCssECm',
-          'actdiag'),
-      KrokiExample(
-          'Network diagram',
-          'NwDiag',
-          r'''nwdiag {
+        'GET https://kroki.io/actdiag/svg/eNrjquZSUCgvyixJVdC1U0jOzytLLSoBMTNzE9NTuYCSOYl5qQqlxalFCiClCiCBpNQcBVsFpVCgoBJEDGJCNFwqHMjPzEtXKEoNDlGKtYYoAhuJpMg9tUQhJTMxvSgxV8HT19HdFaKyFmZpYnIJSBpmL8xxCAOcoSIgWxRK8hU8QRbADKnlAgCssECm',
+        'actdiag'),
+    KrokiExample(
+        'Network diagram',
+        'NwDiag',
+        r'''nwdiag {
   network dmz {
     address = "210.x.x.x/24"
 
@@ -156,12 +153,12 @@ class KrokiTests {
     db02;
   }
 }''',
-          'GET https://kroki.io/nwdiag/svg/eNrjyitPyUxMV6jmUlDISy0pzy_KVkjJrQLzQSAxJaUotbhYwVZBycjQQK8CBPWNTJS4oPLlqUkGhgrRWJQZKsVaIykywqrICKKoFsn2zLyS1KK8xBxsTjA0N0I4wRq3G2Dq8LoBpsgIoSgFaBAS2wjitlouAESTS2A=',
-          'nwdiag'),
-      KrokiExample(
-          'Packet diagram',
-          'PacketDiag',
-          r'''packetdiag {
+        'GET https://kroki.io/nwdiag/svg/eNrjyitPyUxMV6jmUlDISy0pzy_KVkjJrQLzQSAxJaUotbhYwVZBycjQQK8CBPWNTJS4oPLlqUkGhgrRWJQZKsVaIykywqrICKKoFsn2zLyS1KK8xBxsTjA0N0I4wRq3G2Dq8LoBpsgIoSgFaBAS2wjitlouAESTS2A=',
+        'nwdiag'),
+    KrokiExample(
+        'Packet diagram',
+        'PacketDiag',
+        r'''packetdiag {
   colwidth = 32;
   node_height = 72;
 
@@ -183,12 +180,12 @@ class KrokiTests {
   160-191: (Options and Padding);
   192-223: data [colheight = 3];
 }''',
-          'GET https://kroki.io/packetdiag/svg/eNptkU9Pg0AQxe9-ijnqYRN2QSgYD6bGPzFpCW1jTGPMyk5hQ9mtsMjB-N0dIGk8cH2_mXkzb04yr9ApLQv4uQDI7bHXypVwC764IcFYhR8l6qJ0pEWkkegxfp3AxnZNjpDaxg2VPGQ-T-AeW6eNdNqaM_IFC31qwK8ODbWsuvoTm4GEAYtp1F1eGdsfURU1GvePxyGLYxoqnYT14dDiZOXRBh71Zdhi841qEsMEdtkj7BvrpENaV0Te-4Qi8li-zKJFAunmaRaRc7bZziHu0Tlvq1lEITw8zyPBuKBVXrVRth8lsWA8oGyWJeZV29WjGAQUMJnvmmKII7XauCkPHtLlMTlcrk9DxC1IoyCVSmlTXI0VsWBC0EQ1ZLanh56_59MWv39OCoi9',
-          'packetdiag'),
-      KrokiExample(
-          'Rack diagram',
-          'RackDiag',
-          r'''rackdiag {
+        'GET https://kroki.io/packetdiag/svg/eNptkU9Pg0AQxe9-ijnqYRN2QSgYD6bGPzFpCW1jTGPMyk5hQ9mtsMjB-N0dIGk8cH2_mXkzb04yr9ApLQv4uQDI7bHXypVwC764IcFYhR8l6qJ0pEWkkegxfp3AxnZNjpDaxg2VPGQ-T-AeW6eNdNqaM_IFC31qwK8ODbWsuvoTm4GEAYtp1F1eGdsfURU1GvePxyGLYxoqnYT14dDiZOXRBh71Zdhi841qEsMEdtkj7BvrpENaV0Te-4Qi8li-zKJFAunmaRaRc7bZziHu0Tlvq1lEITw8zyPBuKBVXrVRth8lsWA8oGyWJeZV29WjGAQUMJnvmmKII7XauCkPHtLlMTlcrk9DxC1IoyCVSmlTXI0VsWBC0EQ1ZLanh56_59MWv39OCoi9',
+        'packetdiag'),
+    KrokiExample(
+        'Rack diagram',
+        'RackDiag',
+        r'''rackdiag {
   16U;
   1: UPS [2U];
   3: DB Server;
@@ -198,12 +195,12 @@ class KrokiTests {
   7: Load Balancer;
   8: L3 Switch;
 }''',
-          'GET https://kroki.io/rackdiag/svg/eNorSkzOTslMTFeo5lJQMDQLtQZRVgqhAcEK0UahsSCusZWCi5NCcGpRWWoRiG9ipRCemoQkYIouYIYuYG6l4JOfmKLglJiTmJcMEbMAihkrBJdnliRnWHPVAgDhXSWB',
-          'rackdiag'),
-      KrokiExample(
-          'Object Oriented Graph',
-          'GraphViz',
-          r'''digraph "unix" {
+        'GET https://kroki.io/rackdiag/svg/eNorSkzOTslMTFeo5lJQMDQLtQZRVgqhAcEK0UahsSCusZWCi5NCcGpRWWoRiG9ipRCemoQkYIouYIYuYG6l4JOfmKLglJiTmJcMEbMAihkrBJdnliRnWHPVAgDhXSWB',
+        'rackdiag'),
+    KrokiExample(
+        'Object Oriented Graph',
+        'GraphViz',
+        r'''digraph "unix" {
   graph [ fontname = "Helvetica-Oblique",
           fontsize = 36,
           label = "\n\n\n\nObject Oriented Graphs\nStephen North, 3/19/93",
@@ -307,12 +304,12 @@ class KrokiTests {
   "System V.0" -> "System V.2";
   "System V.2" -> "System V.3";
 }''',
-          'GET https://kroki.io/graphviz/svg/eNqFWEtv3DYQvvtXCLr6EXL4RuEe0hRpgbYJ4MYJEPQgr2ivallyJG2cbdH_3tGbpKSNTzaHmhl-8_rGZ2n2UCXP-yg-FNm3OPr3LIr6g89RdF8WTZE82eg6in-x-VfbZLvk8t1dnn052PgCr_Z36uyf9g6T_VGe3Nm8_eYMf97d_W13TfSuymzR2DR62yqvz24a-7y3RfRHWTX7i4i9ouaVYYPOQV8sL2Qc_fUDnhVlaluP6n3y3Iqey_z4UBbj9dTWeMj7P9OsblBrVhatDnJFBq1l50KyFNSP9sU_2ZV5WeHRyz5r7HCpOeat5fssz206v30Fn0OTZ4UdPI9Fs49-TrPWbBx97ny9NheOl9do2DDJBI8vXCevQV90vl3Hl-SKgtRU443Ot-s6yZ_KAnoTcsWECE0A08pAYILS0QT6YIRhYrKQWvtcPx7v8oPtrbz_-DqiCNFoQYcWCDWSycCCMs4jOCcc-GTiocxTW1Rl2r_jt5tPGwDhp9JoUDRECFyEjODdA3vld4cqP76Uo_KYRq9v3kzOqwU8UhC9iICc4eGESWE832mv-fesyKIPXfl8DhBhhukQEddnLikFMiutrC2ONs_Ll071xxJ_LTDRH7bDClrI0G_JHBtEguZyjmtSPdY26Ux1Rn7FuqzSpElC7yVwQlmgWjiQUBQbR3OZPtiqTZgBmBaTV3_eROxU1ihGmQ6tcPcBGhCmObDNHr_PLcxZCY5-GeoXBighgX7GHf2KGpDGA6jMs6-2g4j1ZtRKiVGyCIbRnKowGGJGjFHMIjWZ2u1L_CVphgrTnpGgAIxRxCyiQbxAU0pn5c2h-nIos9oOT2Bwu53-WmlBw0ylZvYcYTRk7g51Y23ehrpXfqt-30KldV0S4CYMATi1Jb2-UCRfj0MG5U2VfbukND6hXjJGF1VGiYM6XgCxWgG8s_PJYqZuZOhl-71C9EPo3TpWkiiYK2FXVkk-1cD7_FCfb0OvtOaLAmBu2xTQlvDpBDUrCbowhZUmTVgLwslPIbBDG_8dgwE41T_b7KNEyrBBa-50Cxw_ju67PCl2e5t2gywdbFzpwUqgHJjhEA4v7igngmHpTcrz7GHfDNOLjrrNum7NGdOh48otLNn2uTl_ki-H5CmpcMYPPYh50Ky0BUE1hLBTd7oLhsU7T_fcIia7fXaPDKM3wT0TYoG-UsAWXQ7cLkcwhZRfBBjd4mHEh1_RDexBUrVooNpJGsIRfh_7fohNquEkQm0QiGKLFuF1N0OwTiDwHzFK-WiEfc8IaVEOjShnoBktCNDVMIDXkBgscZKcAwm1g0OwGFGaySX7YS6_gu3qlZwYtV1hXRvSXMwx3h2TIX0-3LwduFvQe4Q2fFFXTmdGBqO1dIp2ZIM_ve4oT0Tjbc7GOLabU9qVVETMaX-fVfauynaPs9Ow5jSq7dq5F0YXB8mVFE473idVU9lDbbnvPJwoWpyHPeFeH1pdRZFT5G2ywk5YMQaAhaMFnLkLQlLisNqsxt2Le_zq_PwE--GCL7oylS4jYZgDk_4n_PpYlfVEr968x-kb3Rzr6PZEpEEqJcPc584IRu4O7oBMUtu4TBFDzRah7przkNFbjR8tUxHiAz7_XMt8RoQwIW9WzigkmJp09rjvlZUdJhVq5Q7rXGMlyAQJPdnRBAgntLsqe6rHfo-AN_YpunVsLJZGbFVCyM2Vpe0HYHAB2e75kxXYziDsiVQs6InLzxmSIwEb9IQHltgJCiG1EiqMifC2YE2oE5R-zI9UlK4s3Jc_-uvx-o1xtV1u0yjFtXT1fNgo12XzTrgqnxe7VfG0kvn7WavY3amW0nEbWkpUCIIKXdbfvdFuEKsSpP_rX8z8fVXe8e6NL0fePK4XK-p0-JEJnzBQmlYGc7TAOR0Yp08_V2x5spFLzntVB49zNt_l8yl3Tq-c7JmoVy-BDYnnqydZhG5iXL1G5n4Hizcim_H_wzPXxJpkJBM-awnTb-YcrWSmC0vZOOdDXuF-B3E4uF0pi8OB65TK-fmq1JtsPt8YnWLuU9gkCSpw_hfEqtQbQidvTBaG4RLO-FAUPMgVjeOpPXdGyWK0eHKIF0PBk7co_3f2P7OJU2Y=',
-          'graphvis'),
-      KrokiExample(
-          'Commit Graph',
-          'Pikchr',
-          r'''scale = 0.8
+        'GET https://kroki.io/graphviz/svg/eNqFWEtv3DYQvvtXCLr6EXL4RuEe0hRpgbYJ4MYJEPQgr2ivallyJG2cbdH_3tGbpKSNTzaHmhl-8_rGZ2n2UCXP-yg-FNm3OPr3LIr6g89RdF8WTZE82eg6in-x-VfbZLvk8t1dnn052PgCr_Z36uyf9g6T_VGe3Nm8_eYMf97d_W13TfSuymzR2DR62yqvz24a-7y3RfRHWTX7i4i9ouaVYYPOQV8sL2Qc_fUDnhVlaluP6n3y3Iqey_z4UBbj9dTWeMj7P9OsblBrVhatDnJFBq1l50KyFNSP9sU_2ZV5WeHRyz5r7HCpOeat5fssz206v30Fn0OTZ4UdPI9Fs49-TrPWbBx97ny9NheOl9do2DDJBI8vXCevQV90vl3Hl-SKgtRU443Ot-s6yZ_KAnoTcsWECE0A08pAYILS0QT6YIRhYrKQWvtcPx7v8oPtrbz_-DqiCNFoQYcWCDWSycCCMs4jOCcc-GTiocxTW1Rl2r_jt5tPGwDhp9JoUDRECFyEjODdA3vld4cqP76Uo_KYRq9v3kzOqwU8UhC9iICc4eGESWE832mv-fesyKIPXfl8DhBhhukQEddnLikFMiutrC2ONs_Ll071xxJ_LTDRH7bDClrI0G_JHBtEguZyjmtSPdY26Ux1Rn7FuqzSpElC7yVwQlmgWjiQUBQbR3OZPtiqTZgBmBaTV3_eROxU1ihGmQ6tcPcBGhCmObDNHr_PLcxZCY5-GeoXBighgX7GHf2KGpDGA6jMs6-2g4j1ZtRKiVGyCIbRnKowGGJGjFHMIjWZ2u1L_CVphgrTnpGgAIxRxCyiQbxAU0pn5c2h-nIos9oOT2Bwu53-WmlBw0ylZvYcYTRk7g51Y23ehrpXfqt-30KldV0S4CYMATi1Jb2-UCRfj0MG5U2VfbukND6hXjJGF1VGiYM6XgCxWgG8s_PJYqZuZOhl-71C9EPo3TpWkiiYK2FXVkk-1cD7_FCfb0OvtOaLAmBu2xTQlvDpBDUrCbowhZUmTVgLwslPIbBDG_8dgwE41T_b7KNEyrBBa-50Cxw_ju67PCl2e5t2gywdbFzpwUqgHJjhEA4v7igngmHpTcrz7GHfDNOLjrrNum7NGdOh48otLNn2uTl_ki-H5CmpcMYPPYh50Ky0BUE1hLBTd7oLhsU7T_fcIia7fXaPDKM3wT0TYoG-UsAWXQ7cLkcwhZRfBBjd4mHEh1_RDexBUrVooNpJGsIRfh_7fohNquEkQm0QiGKLFuF1N0OwTiDwHzFK-WiEfc8IaVEOjShnoBktCNDVMIDXkBgscZKcAwm1g0OwGFGaySX7YS6_gu3qlZwYtV1hXRvSXMwx3h2TIX0-3LwduFvQe4Q2fFFXTmdGBqO1dIp2ZIM_ve4oT0Tjbc7GOLabU9qVVETMaX-fVfauynaPs9Ow5jSq7dq5F0YXB8mVFE473idVU9lDbbnvPJwoWpyHPeFeH1pdRZFT5G2ywk5YMQaAhaMFnLkLQlLisNqsxt2Le_zq_PwE--GCL7oylS4jYZgDk_4n_PpYlfVEr968x-kb3Rzr6PZEpEEqJcPc584IRu4O7oBMUtu4TBFDzRah7przkNFbjR8tUxHiAz7_XMt8RoQwIW9WzigkmJp09rjvlZUdJhVq5Q7rXGMlyAQJPdnRBAgntLsqe6rHfo-AN_YpunVsLJZGbFVCyM2Vpe0HYHAB2e75kxXYziDsiVQs6InLzxmSIwEb9IQHltgJCiG1EiqMifC2YE2oE5R-zI9UlK4s3Jc_-uvx-o1xtV1u0yjFtXT1fNgo12XzTrgqnxe7VfG0kvn7WavY3amW0nEbWkpUCIIKXdbfvdFuEKsSpP_rX8z8fVXe8e6NL0fePK4XK-p0-JEJnzBQmlYGc7TAOR0Yp08_V2x5spFLzntVB49zNt_l8yl3Tq-c7JmoVy-BDYnnqydZhG5iXL1G5n4Hizcim_H_wzPXxJpkJBM-awnTb-YcrWSmC0vZOOdDXuF-B3E4uF0pi8OB65TK-fmq1JtsPt8YnWLuU9gkCSpw_hfEqtQbQidvTBaG4RLO-FAUPMgVjeOpPXdGyWK0eHKIF0PBk7co_3f2P7OJU2Y=',
+        'graphvis'),
+    KrokiExample(
+        'Commit Graph',
+        'Pikchr',
+        r'''scale = 0.8
 fill = white
 linewid *= 0.5
 circle "C0" fit
@@ -373,12 +370,12 @@ box same width previous.e.x - C2.w.x \
 "trunk" below at 2nd last box.s
 "feature branch" above at last box.n
 ''',
-          'GET https://kroki.io/pikchr/svg/eNrlU8tygjAU3ecr7rBRW80gCLSd6So_4Ad0E2KQTJE4SRD8-14QRLTT6bIzZZX7Ouck92AFLyS8g09fSKaKAo91rpwkhSplrXbw1NYiIpQR2Ogx34NMuT42fIcDRyNPSleWYqgqS7gxuh4n1t59JnjIbB4ysTeeQw-4g52ybs6CJdssIJdIVe4h9CEz-gAsuJ-PesShDk4DC0Hk-khYuH2DEX12A79Zsvgb-LgHM2qfuz4XbqkkLLqFimZT1vjCur3QklQ3CN1BsJCeVyygZ_gggB8-tcthjnBU0mbFfFrTZvE8bGFowh5at2pxJ09DsZbWgc6gHeo7U5mrcoeZPu5W6zcilkGWgcMiCF1oA3vDz50uyw-yV3HdJyqBFb5dq2UiwcpWw7WvlFOaVy5EJojnTFV-eiim0J3oACUVHMUiIbXEyyR3lZGQGl6KHLeQ6lOHfG0qycR5WAppIg5gdYU6ujv_LbuNmeQHAz56JPm9RZKJQ9ZoBLbuf73_65MvEC93wQ==',
-          'pikchr'),
-KrokiExample(
-          'Entity Relationship Diagram',
-          'Erd',
-          r'''[Person]
+        'GET https://kroki.io/pikchr/svg/eNrlU8tygjAU3ecr7rBRW80gCLSd6So_4Ad0E2KQTJE4SRD8-14QRLTT6bIzZZX7Ouck92AFLyS8g09fSKaKAo91rpwkhSplrXbw1NYiIpQR2Ogx34NMuT42fIcDRyNPSleWYqgqS7gxuh4n1t59JnjIbB4ysTeeQw-4g52ybs6CJdssIJdIVe4h9CEz-gAsuJ-PesShDk4DC0Hk-khYuH2DEX12A79Zsvgb-LgHM2qfuz4XbqkkLLqFimZT1vjCur3QklQ3CN1BsJCeVyygZ_gggB8-tcthjnBU0mbFfFrTZvE8bGFowh5at2pxJ09DsZbWgc6gHeo7U5mrcoeZPu5W6zcilkGWgcMiCF1oA3vDz50uyw-yV3HdJyqBFb5dq2UiwcpWw7WvlFOaVy5EJojnTFV-eiim0J3oACUVHMUiIbXEyyR3lZGQGl6KHLeQ6lOHfG0qycR5WAppIg5gdYU6ujv_LbuNmeQHAz56JPm9RZKJQ9ZoBLbuf73_65MvEC93wQ==',
+        'pikchr'),
+    KrokiExample(
+        'Entity Relationship Diagram',
+        'Erd',
+        r'''[Person]
 *name
 height
 weight
@@ -392,13 +389,12 @@ country
 
 Person *--1 Location
 ''',
-'GET https://kroki.io/erd/svg/eNrjig5ILSrOz4vl0spLzE3lykjNTM8o4SqHUNpJmUUlGfE5-cmJJZn5efGZKVxc0T5QHlALkJ-cWVLJVVySWJLKlZxfmldSVMnFBTFSQUtX11ABppoLAK1IJCs=',
-'erd'),
-
-KrokiExample(
-          'Hand-drawn like diagrams',
-          'Excalidraw',
-          r'''
+        'GET https://kroki.io/erd/svg/eNrjig5ILSrOz4vl0spLzE3lykjNTM8o4SqHUNpJmUUlGfE5-cmJJZn5efGZKVxc0T5QHlALkJ-cWVLJVVySWJLKlZxfmldSVMnFBTFSQUtX11ABppoLAK1IJCs=',
+        'erd'),
+    KrokiExample(
+        'Hand-drawn like diagrams',
+        'Excalidraw',
+        r'''
 {
   "type": "excalidraw",
   "version": 2,
@@ -1094,12 +1090,12 @@ KrokiExample(
     "gridSize": 20
   }
 }''',
-          'GET https://kroki.io/excalidraw/svg/eNrVm1tT4koXhu_nV1h8twO7z4e58zioM3hARd01ZQUSIBoSTAKIU_Pfv05kk4OJBiVjjFVi0t3pTudhvWutbn9_2dio-fOxUfu2UTMeeppl6q42q30Nrk8N1zMdWxWh8NxzJm4vrDn0_bH37Z9_ohaNnjN6amVYxsiwfU_V-1edb2z8Dn_H-nGNnq_ZA8sIG4RFUVeQ0_TVlmOH3SIuMSEAiGUF09tR3fmGrkr7muUZUUlwqYaur4aIGDoSewdgvltv46vWVdRr37Sstj-3np5J6w0nbmxMnu86d0bH1P1hMK7U9WU7z1EzELVynclgaBuel2jjjLWe6c-DawAsrz5NwreN6MqDOqMiOg9bEJDqe9uxHDfo-38gPKLeu1rvbqCGYOtRHUg1rduP6swWTxTrZmiYg6Ef9CUbMnGwqGsjnGaKoISMUrQsCPob7-vhC_-VnqWh5o4Xs1HzgpPYWINh7j7Rsmi-KFKFWwaco_nj8AJf68SebbvOzY2oLcp_hZ9_vr4Fr9hTp_CCjHBBMGeF8eoegaMLn434D2d2Nb5HyDje3qw6XoytFy_SY0afPscLojfxBTHACDAJSLmAHWrbR7J-cntu2O359mSi2c6ZsxbAcL79ggLy2IO9xtftI2hO7mXdY-PWw84MnN43e6dV54uv2Xz1tS4AWXy9zX4JBiVDcThLwYsTsz-6H03AtAVah-AG7M2OR-vAS6JcvCDCShzpCoCd26PW2Wh24I_YyJl0e9_99mCr6oBJtm7AKKJoXfqIOBeQ0LL5glMGWrs7qOea37_XZ46sOyc_1sAXArl8QYGwejSAivPl9Dk7IJ2jg6bdNMEPBi88_6bqfEFA1gtY1yBdvbs2CwaJZFwyEfODS0Hs9nZy_Dg_tY2fU9xn1Bp7N0xbiwnLVUhlwQgDiJPiiLWtaffWuKhL67Lbc61Ds1sf3lYeMYTWi5hgwpDsOWLsbYRJLASj6qdcwujJyeNwdjO5v7txt7QOmv10zbNihPnGg58Fl4C5bEEhJIAQycJsTV3dxwf97g66nD2SQ3LWaff2q86WSFmvOisHLSgz2CI0w1pJBDkSpVirqHnfsf22-RjMB2aJq3vayLTmifkM6VEdHGhTra0kdOzH58AzLNMOb4QSLTYtcxAwVrOMfhI-3-xp1rLYd8a1F-HVXNeZZdGLSb5pxComYhTI4uFpdgxd9eyH5A0KOMUYK39DSUECZiRlKTCTLDuJZRpmxhiiiXdQmOVwIAVZ9nzN9bdMWzftgSr5HVnMvtObBJXroEGgDCZJOQKCcEzk8psXjEobx19AlJXbf3L7Hwb-9HxL2z-2dzoH1_Lu_KS5TK78WQ7DsPXXBgFTBy4-iOzc3LNBjB0znkwMjuivjQie8GT596-vmbXrMAUXFvH2dSpfuwNCDSIRUSBAzjiiDCVuoJiJ7vAldaeapXn-tjMamb760h4HD6aey55YVvLNbwbmYWhoerpUvZB42cKOrFknlZlRVMkV0mDZOH2yLCsG5cikJEVUUhCGlLslPjKp-j4p3TP83vCvquiLQQbLTfMKyRGkJPb6X-O7_uMeaIPbzgmGZ6c3m1N6TZqdyvON1uoG-q5me2PNVVhlZEqyUr00HtI8Ua5ECjJKMKps4JrrmVHM89cNEJNEqsiiMFHZyeeqJ3YRbAAqBA1iRghiK0Dz8AvXgJxLQKhgyk-ltJygIzECSFGGdeWyIVR8LSlRaozJc2PLMFexrXgLhu_w4tJK_qJrBYr7UdmLUGX7UbnvIThw-g288348_35V9rHiFiFlM7ByPwSGsXDvNZNBhrtHutWbHbLN5vxieNur_7xsf7a1RlRSKgLgIk4WpghCJgWpYCbiWHM9oxpJCIpJHrZSYKqMvCyudNnrYJVPocEGo5wok4OI-oRJiGFJOQjcgBQi5Z9iNUQMZIZPJZXIEikkQ1ICicHzdJtQwS0hWKKPTlGAhpo9qAy2QJyr5xFshQzFIfGcuub2XXBwCVoHD2Kq87M3ZSgQZBhwrnqXWM0aKz6G7NX30oU1AR6iiQQFfK29ApdINdVCAEYUSowk8xsizc9nUVLxQlqfcuU8sOJLRtlwVV1KU2l9VJKWYsaKaClXDjRVnH7oNor3Sa5ie2xaxoZm6xtHY98cBTeohAJzmb-KxRHhDApSfBNk9laBT7bJA5eEe-YSPHuWuYCcKXus4hJRgcy_UjSuRI0xBJRQgBUkTZ-alxO903owm1cnP6_7982O11xdVpW0cyYRjn7DFRYfMvcclSurIlG9Tl5tQJINFBGfRChlru9OuPLdCVvBcGTTUvks1d8xHEQUSuxDKQSSwbx_5H6w9wnlqVF3FvoYiuWO4VRLLkG-dygog5SssGienTyu-n4imPIORTnQZ-X5M8WSqwgEV0IsMUAw2NYPpXJXcXy59j-hIg0BAIGUY8lV8E1QnnLdD-9up_vwYtS51u3D6Tk9Obw-fIt6qr6EVPaYCYKCRLoorp7ZOypLDkpRoj56tUGi-meRTgTzN-7DIDtN0ApmJJuVyu98Fel8bQNKSdWjM_U1AoiVk77FsoiUIhhYclL6f4a8vHz4PindfTB6E78yupm7pkkJFojHg7DXgM_ey_nZ9uEi8veEUzwTTgSopIxIzD4-eavUEGJAMOFCffnF8yAzVya3WX_-eDZAe83NkXt61d--OWuO3iKTOHUUV8nsTeHlqiRaNcZMNRCfRSdRrtVAACDMCcTFdTIblsq72-zvJGOj7P-LMSajSpspJOQjt-u_Txi_b5ejiV8WI6tp43Hb13xjaWxqU9OYbWX9P1h4LO6uZtLUF08TOr5_vvz5PwWZbjk=',
-          'excalidraw'),
-      KrokiExample(
-          'Word Cloud',
-          'Vega',
-          r'''{
+        'GET https://kroki.io/excalidraw/svg/eNrVm1tT4koXhu_nV1h8twO7z4e58zioM3hARd01ZQUSIBoSTAKIU_Pfv05kk4OJBiVjjFVi0t3pTudhvWutbn9_2dio-fOxUfu2UTMeeppl6q42q30Nrk8N1zMdWxWh8NxzJm4vrDn0_bH37Z9_ohaNnjN6amVYxsiwfU_V-1edb2z8Dn_H-nGNnq_ZA8sIG4RFUVeQ0_TVlmOH3SIuMSEAiGUF09tR3fmGrkr7muUZUUlwqYaur4aIGDoSewdgvltv46vWVdRr37Sstj-3np5J6w0nbmxMnu86d0bH1P1hMK7U9WU7z1EzELVynclgaBuel2jjjLWe6c-DawAsrz5NwreN6MqDOqMiOg9bEJDqe9uxHDfo-38gPKLeu1rvbqCGYOtRHUg1rduP6swWTxTrZmiYg6Ef9CUbMnGwqGsjnGaKoISMUrQsCPob7-vhC_-VnqWh5o4Xs1HzgpPYWINh7j7Rsmi-KFKFWwaco_nj8AJf68SebbvOzY2oLcp_hZ9_vr4Fr9hTp_CCjHBBMGeF8eoegaMLn434D2d2Nb5HyDje3qw6XoytFy_SY0afPscLojfxBTHACDAJSLmAHWrbR7J-cntu2O359mSi2c6ZsxbAcL79ggLy2IO9xtftI2hO7mXdY-PWw84MnN43e6dV54uv2Xz1tS4AWXy9zX4JBiVDcThLwYsTsz-6H03AtAVah-AG7M2OR-vAS6JcvCDCShzpCoCd26PW2Wh24I_YyJl0e9_99mCr6oBJtm7AKKJoXfqIOBeQ0LL5glMGWrs7qOea37_XZ46sOyc_1sAXArl8QYGwejSAivPl9Dk7IJ2jg6bdNMEPBi88_6bqfEFA1gtY1yBdvbs2CwaJZFwyEfODS0Hs9nZy_Dg_tY2fU9xn1Bp7N0xbiwnLVUhlwQgDiJPiiLWtaffWuKhL67Lbc61Ds1sf3lYeMYTWi5hgwpDsOWLsbYRJLASj6qdcwujJyeNwdjO5v7txt7QOmv10zbNihPnGg58Fl4C5bEEhJIAQycJsTV3dxwf97g66nD2SQ3LWaff2q86WSFmvOisHLSgz2CI0w1pJBDkSpVirqHnfsf22-RjMB2aJq3vayLTmifkM6VEdHGhTra0kdOzH58AzLNMOb4QSLTYtcxAwVrOMfhI-3-xp1rLYd8a1F-HVXNeZZdGLSb5pxComYhTI4uFpdgxd9eyH5A0KOMUYK39DSUECZiRlKTCTLDuJZRpmxhiiiXdQmOVwIAVZ9nzN9bdMWzftgSr5HVnMvtObBJXroEGgDCZJOQKCcEzk8psXjEobx19AlJXbf3L7Hwb-9HxL2z-2dzoH1_Lu_KS5TK78WQ7DsPXXBgFTBy4-iOzc3LNBjB0znkwMjuivjQie8GT596-vmbXrMAUXFvH2dSpfuwNCDSIRUSBAzjiiDCVuoJiJ7vAldaeapXn-tjMamb760h4HD6aey55YVvLNbwbmYWhoerpUvZB42cKOrFknlZlRVMkV0mDZOH2yLCsG5cikJEVUUhCGlLslPjKp-j4p3TP83vCvquiLQQbLTfMKyRGkJPb6X-O7_uMeaIPbzgmGZ6c3m1N6TZqdyvON1uoG-q5me2PNVVhlZEqyUr00HtI8Ua5ECjJKMKps4JrrmVHM89cNEJNEqsiiMFHZyeeqJ3YRbAAqBA1iRghiK0Dz8AvXgJxLQKhgyk-ltJygIzECSFGGdeWyIVR8LSlRaozJc2PLMFexrXgLhu_w4tJK_qJrBYr7UdmLUGX7UbnvIThw-g288348_35V9rHiFiFlM7ByPwSGsXDvNZNBhrtHutWbHbLN5vxieNur_7xsf7a1RlRSKgLgIk4WpghCJgWpYCbiWHM9oxpJCIpJHrZSYKqMvCyudNnrYJVPocEGo5wok4OI-oRJiGFJOQjcgBQi5Z9iNUQMZIZPJZXIEikkQ1ICicHzdJtQwS0hWKKPTlGAhpo9qAy2QJyr5xFshQzFIfGcuub2XXBwCVoHD2Kq87M3ZSgQZBhwrnqXWM0aKz6G7NX30oU1AR6iiQQFfK29ApdINdVCAEYUSowk8xsizc9nUVLxQlqfcuU8sOJLRtlwVV1KU2l9VJKWYsaKaClXDjRVnH7oNor3Sa5ie2xaxoZm6xtHY98cBTeohAJzmb-KxRHhDApSfBNk9laBT7bJA5eEe-YSPHuWuYCcKXus4hJRgcy_UjSuRI0xBJRQgBUkTZ-alxO903owm1cnP6_7982O11xdVpW0cyYRjn7DFRYfMvcclSurIlG9Tl5tQJINFBGfRChlru9OuPLdCVvBcGTTUvks1d8xHEQUSuxDKQSSwbx_5H6w9wnlqVF3FvoYiuWO4VRLLkG-dygog5SssGienTyu-n4imPIORTnQZ-X5M8WSqwgEV0IsMUAw2NYPpXJXcXy59j-hIg0BAIGUY8lV8E1QnnLdD-9up_vwYtS51u3D6Tk9Obw-fIt6qr6EVPaYCYKCRLoorp7ZOypLDkpRoj56tUGi-meRTgTzN-7DIDtN0ApmJJuVyu98Fel8bQNKSdWjM_U1AoiVk77FsoiUIhhYclL6f4a8vHz4PindfTB6E78yupm7pkkJFojHg7DXgM_ey_nZ9uEi8veEUzwTTgSopIxIzD4-eavUEGJAMOFCffnF8yAzVya3WX_-eDZAe83NkXt61d--OWuO3iKTOHUUV8nsTeHlqiRaNcZMNRCfRSdRrtVAACDMCcTFdTIblsq72-zvJGOj7P-LMSajSpspJOQjt-u_Txi_b5ejiV8WI6tp43Hb13xjaWxqU9OYbWX9P1h4LO6uZtLUF08TOr5_vvz5PwWZbjk=',
+        'excalidraw'),
+    KrokiExample(
+        'Word Cloud',
+        'Vega',
+        r'''{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "width": 800,
   "height": 400,
@@ -1176,12 +1172,12 @@ KrokiExample(
     }
   ]
 }''',
-          'GET https://kroki.io/vega/svg/eNqlWN2O3LYVvvdTEJMCYxez643tdWMDuTCQoilQtEXSxhfOXnBEzoiNJCokNVrZ2iCvkdfrk_T7DjU_mt0N0haYESXy8PD8fudIn54otfhdLEpb68VbtShTauPb5893dqsvty6V3frS-eeZQGaf764v_xV9s1hxa-9MKrHxi6sreS6t25YJE6-miVYb45otZvDMCaMTT_qAe6U-yRWzja4tz096XVlhLdM7XXU2Hshl7itbVDro5HZW7VzsdOU-4sk3aht0XesQVaEbpYvCVhZ0Vhm7s5Vva9ukldrowlUucT7YpMPWJsgH8uBjVG2l08aHOq6UbozSVeV7Velm2-mtvajISPk2uXo6M16qr32P6bBS9tZF4WUelXDPKSodrGqDg7iuGlThm8KGxhrVw-bTJmWbwtN4WZZgQQgerm7txBznNkmVWIWmUUFw5ZqE1UKW17bUO-cDhPxzg_2xhcB2pXpLsuBNV1ilVe0NtdrM5D7wwYnGRrdthD29N9cJzN8ZmgSK1zaV3kCQ4GucN4nRBi-eEU1wdj4Php3sKVrAIvCbr1sfGQL5oJjApJ749aUrSu6nf1SJOLNh4hARnE1yhaKcuoJI3-YbtbGwaRuscQU8HsWQsdAVFYTTIhVYTayzs7uokldb20B96GhnFo0IKbEJOCWVSqumkNgol2yNbR42CIN62rpbW8Vn3O1nLH7sbHCQxON44SCaGl9r11yqv4tXxOqhq0AGigYyWd7E424whcqu7SoGMtnMnPLvn3-BhG1r4U5E1qX6h58HPjmKLUoEIP2S2SMOYXMIkHNobRmDuo1yjKGLmKjmoBBi6y28BE668g1Cq-0kTE8jKba2cBvaX-xGU53EVrJF2TioBae9h0wxWqSh70IOE1FkY3V0awo_iND2Fh6N0e04sR7AjyIkpyUIXcpJZG-TbcTBtBZN9B3g62HIgIHK4LstgkAZx8CAkZCrluLaW1238IUEr7G12IhmLOhDTSL6EvaykfjlYgkTJX3rG18P5DA_8xH1D6gHjHvPrIFDkN3f7NOI0gMJVBwiQ02HokTMFQkWh3YIR-TZzpkcM2rjQkwq-HWHgUZjbgVb0iRgxsRKBMTzvJ-ghzt-MwQg3QCkYnzJVMiIeybxY2Gwmqt1GndaDtgwFeGctoQYU366pu2SrK6Qw0jQiQA5SU0myD6Veo8ssBCSOyudw1jMcwHpEGwZZQS4BXQQfAXDETkTu7b1IR0jbg4HcyDMXqg1A3LnK1rZ1fZip8NA5oQdjTKBBBF6Xa0UzFk6sKMvsTwpN7ONZMCZSZibZkAqchPSLdiLPiAYEPtAqA2xKXQNT2d6SCKwjvC4Fgu8XRMYkPM0bzb5hQk4Ez7WsRSnIgiNi0UHE609EooR5Cp7katR11zIAbNqSMyp3FTGwPk8eCfEyYgFi3ZVEkRYA2ZK5OEPcEZnBOBoS9dk3KYfgHtn5Q1TLAUEOGa4yPjVSzmE7H1wWydWbnxzEWbxlnPosZQjycVfYE-mGwvNVGYmsMiy2YZ1KgImWmfm0T3DuJ19uGgeDqFd165hcUKEauNycBxOAzPxuisQ4TnH6cCzHmEqF9K0THVUGCHwtxbOltSt9GADEwBUNWzvLnbO9vQy-p6BAEfg1DDYqbpzxL5U_4xsNrLGw1l5zHU4MuwmIRj5h6opjcjMvIc15Si90muC6wSOtLOxGzFOzv7c8cAKBdORhav1rknHsgIInlq3Y9lXm67JHHOHVFRdzOAr_Rrg61jWW-AVSjii7aM9t7GoBeV30jDGGSCJmPs0tznnCEk4EJuYWlwEzh38W_mtK1h47DwWmGOoJl1CS5CmBI9DwwINmRBw9sfORRJLXAksSFU8NoM8StjvW5tOXEbYYKkKqBJiik0XwDYo5DhOO6A5fARB4QaUDiTWoa895NC8pK9O5D9pkAD-EgFsNB6qJdIZsfF17Elt09WgYOt36OaAVCm3BZYvAvTk8aR0KNgPFOpjlRaXdEUBr6f7WZpxbdLezovHvpmdimc9q9bkWTIGWt00Eocfva8PvTo88APYHaxxuZiA5ubwagPhmkj8mr3dfDrckWRo5aWo8ADzVifI1pxAFig2zlaGJPJWNVsqdJTNqGA2zJf2rLD64fvv--XNp5eruzkJLNL2Phi-ey2eurG2Yz3gx_Iy9nbs4ogyyb_cYHpn4zj4jv8gl5iv3DAcSUo7lq7GP3KU1cg5G_iPcuGkS_jFMRe0EVE68FLz4kK-RpmZ-PbAilGCHVfPf81LtCBypMSy9Li4clbXI6ZRisZeYzeAY1zzZxtc4McRr04QC2ulNnzgnPH44TDjDG4407uqGnvfVQZqyIAkGwu5Y3hCi2VN_ZeBSi4jtV1SryVP5Sx14-iWOJCUGLCym1Z2XDGyYMjBCAdDEpMpDAggBSkwYBHXmIderkKF0cVmmagzB6gtg82PZX6k1nk0HKhtHuXqZLL3-QodeYOCnof9RKGna-NTNgWfa2QZx8pSdfqDFij9MvtuKa63spTHHr1qHqbHgTS-x1WPMDLoMJhx3cHIm9EHOK7QHX0bR3Y_FeOhsqPfjHD-ehiRbSMr3KjXHpv0VvPNAdtST78TkMYJVkbT8b0Ia9gEjhskDLftGCNA3BGk7HXHrsXPN7BQTw4jGePRbyARoBaCGO7kUeMEt5QcFGhbROWssKiblaWqVHQE9EPDYSRKjcDectzYfqwpUO0huBduEa-cI-FobDx-YaTZfVMNI0WKmqvUiybzfoRQA2blj2jUjgGFk54tDvl_t_p1PCJq4Y1wsVILLQCh2e3PAYQdswDMxavrlbpaqVfXNx9--ukpUA_vuk-fqd-rl89u_o8z-_yl6cFD3eYpALGrLxPq8JdfLr_745_eLVfq9RXkeHl1darqHpef7J9u8mcqKePx8Q9Vha_8EVYPYgIy2XMeF_KLPZY-7b987b9xnaA3xVwcLLCQgsajF5-Za_3mxRck_uz19YvizZXcvnn55vrNHxb3hGYH_YDMe-HkmMMpDN8H5DqKIW0PNx4dgjkkwmxKTXzJ6RGFhAi97zbbQT7qiQ0ztzndGnUL5dPOSXXVlhqJ6ooz8g0AWEjFYSeeuWfeh0IN1RHa23OFyPRvrS5cGmZifP4wk5KZ_lt5XF1e390Lv7v_pS1gfS4q35mz0o1Ohpv5SZafYW9W_7Wvgk-TVWYdBhIqZ_qZC9ArkuJrVmJ2rOqvtkNL9y64k0w4kH6b5bvHWrqcB1i_339SvrdjgoC7B4_4Zp9En79YqevXN2cd0P6r9Itfg4Ind_8BeFv4-A==',
-          'vega'),
-      KrokiExample(
-          'Diverging Stacked Bar Chart',
-          'Vega-Lite',
-          r'''{
+        'GET https://kroki.io/vega/svg/eNqlWN2O3LYVvvdTEJMCYxez643tdWMDuTCQoilQtEXSxhfOXnBEzoiNJCokNVrZ2iCvkdfrk_T7DjU_mt0N0haYESXy8PD8fudIn54otfhdLEpb68VbtShTauPb5893dqsvty6V3frS-eeZQGaf764v_xV9s1hxa-9MKrHxi6sreS6t25YJE6-miVYb45otZvDMCaMTT_qAe6U-yRWzja4tz096XVlhLdM7XXU2Hshl7itbVDro5HZW7VzsdOU-4sk3aht0XesQVaEbpYvCVhZ0Vhm7s5Vva9ukldrowlUucT7YpMPWJsgH8uBjVG2l08aHOq6UbozSVeV7Velm2-mtvajISPk2uXo6M16qr32P6bBS9tZF4WUelXDPKSodrGqDg7iuGlThm8KGxhrVw-bTJmWbwtN4WZZgQQgerm7txBznNkmVWIWmUUFw5ZqE1UKW17bUO-cDhPxzg_2xhcB2pXpLsuBNV1ilVe0NtdrM5D7wwYnGRrdthD29N9cJzN8ZmgSK1zaV3kCQ4GucN4nRBi-eEU1wdj4Php3sKVrAIvCbr1sfGQL5oJjApJ749aUrSu6nf1SJOLNh4hARnE1yhaKcuoJI3-YbtbGwaRuscQU8HsWQsdAVFYTTIhVYTayzs7uokldb20B96GhnFo0IKbEJOCWVSqumkNgol2yNbR42CIN62rpbW8Vn3O1nLH7sbHCQxON44SCaGl9r11yqv4tXxOqhq0AGigYyWd7E424whcqu7SoGMtnMnPLvn3-BhG1r4U5E1qX6h58HPjmKLUoEIP2S2SMOYXMIkHNobRmDuo1yjKGLmKjmoBBi6y28BE668g1Cq-0kTE8jKba2cBvaX-xGU53EVrJF2TioBae9h0wxWqSh70IOE1FkY3V0awo_iND2Fh6N0e04sR7AjyIkpyUIXcpJZG-TbcTBtBZN9B3g62HIgIHK4LstgkAZx8CAkZCrluLaW1238IUEr7G12IhmLOhDTSL6EvaykfjlYgkTJX3rG18P5DA_8xH1D6gHjHvPrIFDkN3f7NOI0gMJVBwiQ02HokTMFQkWh3YIR-TZzpkcM2rjQkwq-HWHgUZjbgVb0iRgxsRKBMTzvJ-ghzt-MwQg3QCkYnzJVMiIeybxY2Gwmqt1GndaDtgwFeGctoQYU366pu2SrK6Qw0jQiQA5SU0myD6Veo8ssBCSOyudw1jMcwHpEGwZZQS4BXQQfAXDETkTu7b1IR0jbg4HcyDMXqg1A3LnK1rZ1fZip8NA5oQdjTKBBBF6Xa0UzFk6sKMvsTwpN7ONZMCZSZibZkAqchPSLdiLPiAYEPtAqA2xKXQNT2d6SCKwjvC4Fgu8XRMYkPM0bzb5hQk4Ez7WsRSnIgiNi0UHE609EooR5Cp7katR11zIAbNqSMyp3FTGwPk8eCfEyYgFi3ZVEkRYA2ZK5OEPcEZnBOBoS9dk3KYfgHtn5Q1TLAUEOGa4yPjVSzmE7H1wWydWbnxzEWbxlnPosZQjycVfYE-mGwvNVGYmsMiy2YZ1KgImWmfm0T3DuJ19uGgeDqFd165hcUKEauNycBxOAzPxuisQ4TnH6cCzHmEqF9K0THVUGCHwtxbOltSt9GADEwBUNWzvLnbO9vQy-p6BAEfg1DDYqbpzxL5U_4xsNrLGw1l5zHU4MuwmIRj5h6opjcjMvIc15Si90muC6wSOtLOxGzFOzv7c8cAKBdORhav1rknHsgIInlq3Y9lXm67JHHOHVFRdzOAr_Rrg61jWW-AVSjii7aM9t7GoBeV30jDGGSCJmPs0tznnCEk4EJuYWlwEzh38W_mtK1h47DwWmGOoJl1CS5CmBI9DwwINmRBw9sfORRJLXAksSFU8NoM8StjvW5tOXEbYYKkKqBJiik0XwDYo5DhOO6A5fARB4QaUDiTWoa895NC8pK9O5D9pkAD-EgFsNB6qJdIZsfF17Elt09WgYOt36OaAVCm3BZYvAvTk8aR0KNgPFOpjlRaXdEUBr6f7WZpxbdLezovHvpmdimc9q9bkWTIGWt00Eocfva8PvTo88APYHaxxuZiA5ubwagPhmkj8mr3dfDrckWRo5aWo8ADzVifI1pxAFig2zlaGJPJWNVsqdJTNqGA2zJf2rLD64fvv--XNp5eruzkJLNL2Phi-ey2eurG2Yz3gx_Iy9nbs4ogyyb_cYHpn4zj4jv8gl5iv3DAcSUo7lq7GP3KU1cg5G_iPcuGkS_jFMRe0EVE68FLz4kK-RpmZ-PbAilGCHVfPf81LtCBypMSy9Li4clbXI6ZRisZeYzeAY1zzZxtc4McRr04QC2ulNnzgnPH44TDjDG4407uqGnvfVQZqyIAkGwu5Y3hCi2VN_ZeBSi4jtV1SryVP5Sx14-iWOJCUGLCym1Z2XDGyYMjBCAdDEpMpDAggBSkwYBHXmIderkKF0cVmmagzB6gtg82PZX6k1nk0HKhtHuXqZLL3-QodeYOCnof9RKGna-NTNgWfa2QZx8pSdfqDFij9MvtuKa63spTHHr1qHqbHgTS-x1WPMDLoMJhx3cHIm9EHOK7QHX0bR3Y_FeOhsqPfjHD-ehiRbSMr3KjXHpv0VvPNAdtST78TkMYJVkbT8b0Ia9gEjhskDLftGCNA3BGk7HXHrsXPN7BQTw4jGePRbyARoBaCGO7kUeMEt5QcFGhbROWssKiblaWqVHQE9EPDYSRKjcDectzYfqwpUO0huBduEa-cI-FobDx-YaTZfVMNI0WKmqvUiybzfoRQA2blj2jUjgGFk54tDvl_t_p1PCJq4Y1wsVILLQCh2e3PAYQdswDMxavrlbpaqVfXNx9--ukpUA_vuk-fqd-rl89u_o8z-_yl6cFD3eYpALGrLxPq8JdfLr_745_eLVfq9RXkeHl1darqHpef7J9u8mcqKePx8Q9Vha_8EVYPYgIy2XMeF_KLPZY-7b987b9xnaA3xVwcLLCQgsajF5-Za_3mxRck_uz19YvizZXcvnn55vrNHxb3hGYH_YDMe-HkmMMpDN8H5DqKIW0PNx4dgjkkwmxKTXzJ6RGFhAi97zbbQT7qiQ0ztzndGnUL5dPOSXXVlhqJ6ooz8g0AWEjFYSeeuWfeh0IN1RHa23OFyPRvrS5cGmZifP4wk5KZ_lt5XF1e390Lv7v_pS1gfS4q35mz0o1Ohpv5SZafYW9W_7Wvgk-TVWYdBhIqZ_qZC9ArkuJrVmJ2rOqvtkNL9y64k0w4kH6b5bvHWrqcB1i_339SvrdjgoC7B4_4Zp9En79YqevXN2cd0P6r9Itfg4Ind_8BeFv4-A==',
+        'vega'),
+    KrokiExample(
+        'Diverging Stacked Bar Chart',
+        'Vega-Lite',
+        r'''{
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
   "data": {
@@ -1286,12 +1282,12 @@ KrokiExample(
     }
   }
 }''',
-          'GET https://kroki.io/vegalite/svg/eNq9WE1v4zYQve-vGDAt3KKKrG_bC-QQIL0W3fYYGAtaomVuZMkRaW-MbP77jmhZlk3FklynOTgUOZx58x7FIfX6CYD8IsIFW1LyGchCypX4PBxuWEzNmMvFembybLgzUL23CZdsuPHMbyJLiVHMj5gIc76SHDvQxz1EfMPymKcxCEnDJxbBjOYQLmguYZ7lIFgq-RJ_BMjsO80jARQ7JWRzYDxeSHheM1H4EwY6E6uEbtEJFbBieYjzaMwEfEd4kLK1zGkCORMrNMdugc9RlBTR5YKB9Sssaf5UIqWySPMV2_i0oQmGwedH9QzwSvZxizy-lG2wiQFEbles6P1X5lkaJ9sCF41zxopB5QlHHQ8fDhixxzJHb0YP9w9NXiea24lp93L7F0OyWA7KN6SoQRN8Xw9kj02_V6T7U6f2xBmdevUn5qSX14p1DbM7CjTMdjvpTndNGyhxerl_-BCv3SS1tAXZK4impiZl4JrBZWRrWG27N1j3chmdfs4frkKu21_B_wpck1B7x70Lab4GVK-zgP3J9vq_hE77buf1l1Bb14Hp9grT_hp6rjm-jGsNrbafuqN2VvwP1NFv01Hj12vfS_3-MrqXLBf_fHHUyA6C9uLldxNSL-YdfAedhbxkVQe9pezr9MJNtYuUwVkpJ9ohpy_0M4echtNC6-s--sBXcnT90ji6wr7q9IvSXhrH1mUsX4GP8QfKN76-fOP_42w6PqvetTjusFtY1pvyPMVfFYTgrTMVeLldVvfJ1zI2CWkSrhMqVRQ-_w1voeulWYSFu7s7GGjiDoxbx7B-hz_gyBqNBw8HE7vBBB0O3id_YFjNc-4G97tx-73xY3IGRoGP7NkltLhFk-evWR6xnKjekvrOJFSJwY8f0IGh0uYgyzvI4SwfmhcYQlNqgscpi77WFsFRkkR95ygMaxZGOfmRbNRdduOQKf6L82y9mm3VQLUop6d0fct4SmMEGe8o23-iOJgoszlnSdQM0KjbZStltF4ed--Sy-ZzwSSpBt7K1rQioRnzMQVHAu9o3dhwWzJcxthzQtIXcnamc2amQwqECh1R33awd0bz3SceloZZxNP48JnnpWrWCUMAVXr7HeB5TVPJJZV8w2or4IWLmovCnstETfj7ZD3suStTIwgVJ9aDOvu0ybYRVsWuBi7Nlrgkkk64vpx6gUplPJcY9RnhU-FkThPBav0Y6s8XiakVJzCrNhBlS8rT_YzGpMMsyfLG5FQq7YklLGZp9E5q_5Qf-irCq2kC1xE7nlWhfWyuoPXSd75mVcXmpEpMa9xgBVDV4ZHchK4VOeq-dTN3qT9WF-ibUP2p5sQLg4iqpj0aWXR25GlPDe6nippjnoua8-ntJ7dCWRo=',
-          'vegalite'),
-      KrokiExample(
-          'Conjugate prior relationships',
-          'Ditaa',
-          r'''
+        'GET https://kroki.io/vegalite/svg/eNq9WE1v4zYQve-vGDAt3KKKrG_bC-QQIL0W3fYYGAtaomVuZMkRaW-MbP77jmhZlk3FklynOTgUOZx58x7FIfX6CYD8IsIFW1LyGchCypX4PBxuWEzNmMvFembybLgzUL23CZdsuPHMbyJLiVHMj5gIc76SHDvQxz1EfMPymKcxCEnDJxbBjOYQLmguYZ7lIFgq-RJ_BMjsO80jARQ7JWRzYDxeSHheM1H4EwY6E6uEbtEJFbBieYjzaMwEfEd4kLK1zGkCORMrNMdugc9RlBTR5YKB9Sssaf5UIqWySPMV2_i0oQmGwedH9QzwSvZxizy-lG2wiQFEbles6P1X5lkaJ9sCF41zxopB5QlHHQ8fDhixxzJHb0YP9w9NXiea24lp93L7F0OyWA7KN6SoQRN8Xw9kj02_V6T7U6f2xBmdevUn5qSX14p1DbM7CjTMdjvpTndNGyhxerl_-BCv3SS1tAXZK4impiZl4JrBZWRrWG27N1j3chmdfs4frkKu21_B_wpck1B7x70Lab4GVK-zgP3J9vq_hE77buf1l1Bb14Hp9grT_hp6rjm-jGsNrbafuqN2VvwP1NFv01Hj12vfS_3-MrqXLBf_fHHUyA6C9uLldxNSL-YdfAedhbxkVQe9pezr9MJNtYuUwVkpJ9ohpy_0M4echtNC6-s--sBXcnT90ji6wr7q9IvSXhrH1mUsX4GP8QfKN76-fOP_42w6PqvetTjusFtY1pvyPMVfFYTgrTMVeLldVvfJ1zI2CWkSrhMqVRQ-_w1voeulWYSFu7s7GGjiDoxbx7B-hz_gyBqNBw8HE7vBBB0O3id_YFjNc-4G97tx-73xY3IGRoGP7NkltLhFk-evWR6xnKjekvrOJFSJwY8f0IGh0uYgyzvI4SwfmhcYQlNqgscpi77WFsFRkkR95ygMaxZGOfmRbNRdduOQKf6L82y9mm3VQLUop6d0fct4SmMEGe8o23-iOJgoszlnSdQM0KjbZStltF4ed--Sy-ZzwSSpBt7K1rQioRnzMQVHAu9o3dhwWzJcxthzQtIXcnamc2amQwqECh1R33awd0bz3SceloZZxNP48JnnpWrWCUMAVXr7HeB5TVPJJZV8w2or4IWLmovCnstETfj7ZD3suStTIwgVJ9aDOvu0ybYRVsWuBi7Nlrgkkk64vpx6gUplPJcY9RnhU-FkThPBav0Y6s8XiakVJzCrNhBlS8rT_YzGpMMsyfLG5FQq7YklLGZp9E5q_5Qf-irCq2kC1xE7nlWhfWyuoPXSd75mVcXmpEpMa9xgBVDV4ZHchK4VOeq-dTN3qT9WF-ibUP2p5sQLg4iqpj0aWXR25GlPDe6nippjnoua8-ntJ7dCWRo=',
+        'vegalite'),
+    KrokiExample(
+        'Conjugate prior relationships',
+        'Ditaa',
+        r'''
                           +-------------+
                           |             |
                           | Exponential |
@@ -1317,12 +1313,12 @@ KrokiExample(
                                      |       |
                                      +-------+
 ''',
-          'GET https://kroki.io/ditaa/svg/eNqVU80KwjAMvvcpei--gXgTLyI-gZDhkMHaiuvEQx7ebmO29jfLTl3S5PtpGM-G2PkhWL4S_0_FyuPnqVWrTAd9pZLak46T0KwH2dwhmL4p6vPfLICcJ1OgiZFcBsaUdI5VJKo9n_VD6Ze0bnB07Q9z5QmkhLly71LIr7obBq1cj4xtQcbjE-LYogcWbc8bd7OfQ9a0BgpXFinRyyH_la86x09WkPCEnFjqt2cDcbOmuKxW0jertjQJb5DwyBfJ14lypN1AAtMENsG-et_GDg==',
-          'ditaa'),
-      KrokiExample(
-          'Sequence diagram',
-          'Mermaid',
-          r'''sequenceDiagram
+        'GET https://kroki.io/ditaa/svg/eNqVU80KwjAMvvcpei--gXgTLyI-gZDhkMHaiuvEQx7ebmO29jfLTl3S5PtpGM-G2PkhWL4S_0_FyuPnqVWrTAd9pZLak46T0KwH2dwhmL4p6vPfLICcJ1OgiZFcBsaUdI5VJKo9n_VD6Ze0bnB07Q9z5QmkhLly71LIr7obBq1cj4xtQcbjE-LYogcWbc8bd7OfQ9a0BgpXFinRyyH_la86x09WkPCEnFjqt2cDcbOmuKxW0jertjQJb5DwyBfJ14lypN1AAtMENsG-et_GDg==',
+        'ditaa'),
+    KrokiExample(
+        'Sequence diagram',
+        'Mermaid',
+        r'''sequenceDiagram
     participant Alice
     participant Bob
     Alice->John: Hello John, how are you?
@@ -1334,12 +1330,12 @@ KrokiExample(
     John->Bob: How about you?
     Bob-->John: Jolly good!
 ''',
-          'GET https://kroki.io/mermaid/svg/eNpljzFuwzAMRXefgtlrZzcKBymCtMjQoTegZdYiwoqqTLfw7SMrSDKEi4j_H6nPaqLfmYKjA-OY8KeCXBGTseOIwWAv7OhJfdO-aMWtu5P60MIHiSis_Qt4_QdMBIvOu0KKaswEinnnyZ2LuNbK3zYcefQGOCKHycAvUZ3XMCTGglMYyvupRpAKq99wHf1CYw0oYF7n7Ezw2qdtFxP9IUvTNNX9s7orsVt4T4S2eRhdPiufsUbvdbZH-KzXt4wnFVlgVB021QUIImOl',
-          'mermaid'),
-      KrokiExample(
-          'UML diagram',
-          'Nomnoml',
-          r'''[Pirate|eyeCount: Int|raid();pillage()|
+        'GET https://kroki.io/mermaid/svg/eNpljzFuwzAMRXefgtlrZzcKBymCtMjQoTegZdYiwoqqTLfw7SMrSDKEi4j_H6nPaqLfmYKjA-OY8KeCXBGTseOIwWAv7OhJfdO-aMWtu5P60MIHiSis_Qt4_QdMBIvOu0KKaswEinnnyZ2LuNbK3zYcefQGOCKHycAvUZ3XMCTGglMYyvupRpAKq99wHf1CYw0oYF7n7Ezw2qdtFxP9IUvTNNX9s7orsVt4T4S2eRhdPiufsUbvdbZH-KzXt4wnFVlgVB021QUIImOl',
+        'mermaid'),
+    KrokiExample(
+        'UML diagram',
+        'Nomnoml',
+        r'''[Pirate|eyeCount: Int|raid();pillage()|
   [beard]--[parrot]
   [beard]-:>[foul mouth]
 ]
@@ -1360,12 +1356,12 @@ KrokiExample(
 
 [<actor>Sailor] - [<usecase>shiver me;timbers]
 ''',
-          'GET https://kroki.io/nomnoml/svg/eNpdULFqwzAQ3fUVGpOCQ7eCY7R06hAodBQazvbFVpGlcHdqCfjja2FMnIKGp3fv3eOdsp-eQHDGO76nHKXWH1FmAt8fjuebDwEGPBxnpbVtEah3VWVvQJTE7bja2GvKQU8py-iUU8o20LIQdGIuQJB7JNfUi3nNc2oDlX49nd7s5LkbPV6XwXcK4R6R2VXmIX9iKU__KfZxWN5usdEvRTgLsPgiW7vxrx8Ox71u591Qs4UsRViAxLAUZfkImlvIsTRSdkNl1o3Jd2imRKhDKheyD1xinhkdky42jL3B9WSdJDJf4EMipyttm8zYAaPh0f8g6QnP4qcWiZ36A9RWnDM=',
-          'nomnoml'),
-      KrokiExample(
-          'Use case diagram',
-          'PlantUML',
-          r'''@startuml
+        'GET https://kroki.io/nomnoml/svg/eNpdULFqwzAQ3fUVGpOCQ7eCY7R06hAodBQazvbFVpGlcHdqCfjja2FMnIKGp3fv3eOdsp-eQHDGO76nHKXWH1FmAt8fjuebDwEGPBxnpbVtEah3VWVvQJTE7bja2GvKQU8py-iUU8o20LIQdGIuQJB7JNfUi3nNc2oDlX49nd7s5LkbPV6XwXcK4R6R2VXmIX9iKU__KfZxWN5usdEvRTgLsPgiW7vxrx8Ox71u591Qs4UsRViAxLAUZfkImlvIsTRSdkNl1o3Jd2imRKhDKheyD1xinhkdky42jL3B9WSdJDJf4EMipyttm8zYAaPh0f8g6QnP4qcWiZ36A9RWnDM=',
+        'nomnoml'),
+    KrokiExample(
+        'Use case diagram',
+        'PlantUML',
+        r'''@startuml
 left to right direction
 skinparam packageStyle rectangle
 skinparam monochrome true
@@ -1379,12 +1375,12 @@ rectangle checkout {
 }
 @enduml
 r''',
-          'GET https://kroki.io/plantuml/svg/eNpVkE0Kg0AMRvdziiztwh7ARfEOPUGIqQ7zSyYDldK7d6So7fLLe_kIMWNRFK3BG88PBU0gdl4UJitMalM0xdmYUTBARnI4811Xz7BhjLPnHyGkmGiRFBhUKhskTQJUi7aR7NGzOHOsAy1MLlWFl4HDhb6HbieXBs4A1xt0GdfAsYUBbCRfJ96chX3-8tMegJ_KcSr_Ja3_e8jbjI1uD_gAxEdcbw==',
-          'plantuml'),
-      KrokiExample(
-          'Work Breakdown Structure',
-          'PlantUML',
-          r'''@startwbs
+        'GET https://kroki.io/plantuml/svg/eNpVkE0Kg0AMRvdziiztwh7ARfEOPUGIqQ7zSyYDldK7d6So7fLLe_kIMWNRFK3BG88PBU0gdl4UJitMalM0xdmYUTBARnI4811Xz7BhjLPnHyGkmGiRFBhUKhskTQJUi7aR7NGzOHOsAy1MLlWFl4HDhb6HbieXBs4A1xt0GdfAsYUBbCRfJ96chX3-8tMegJ_KcSr_Ja3_e8jbjI1uD_gAxEdcbw==',
+        'plantuml'),
+    KrokiExample(
+        'Work Breakdown Structure',
+        'PlantUML',
+        r'''@startwbs
 skinparam monochrome true
 * Business Process Modelling WBS
 ** Launch the project
@@ -1399,12 +1395,12 @@ skinparam monochrome true
 ** Complete innovate phase
 @endwbs
 ''',
-          'GET https://kroki.io/plantuml/svg/eNqNkLtOw1AMhvc8heds8ASlsEQCqdChszlxekzOsSPbAfH25CKVtZMt65P_y8EDLX4-vfGRZULDClVFUzatBGEzNS0cZ2chdziZpnW-aU-lsFzhcjw3bQuvOEvKEJlgMv2iFMu1hWetU6EgOAeOlLX0ZPBBTmgpb0QnHIwFuhWsJIHBKnAqKOvfF3K-CkwZnTZ-UwYd4Mm7mx_ym1K_UndgD3dyj7sqoc9GOzWRDWoVJRFUCuPke5R-sc_DL7zPnEa4sKz3_w5YRL9xWfY0B5J-Kf4PckyD5A==',
-          'plantuml'),
-      KrokiExample(
-          'Gantt',
-          'Mermaid',
-          r'''gantt
+        'GET https://kroki.io/plantuml/svg/eNqNkLtOw1AMhvc8heds8ASlsEQCqdChszlxekzOsSPbAfH25CKVtZMt65P_y8EDLX4-vfGRZULDClVFUzatBGEzNS0cZ2chdziZpnW-aU-lsFzhcjw3bQuvOEvKEJlgMv2iFMu1hWetU6EgOAeOlLX0ZPBBTmgpb0QnHIwFuhWsJIHBKnAqKOvfF3K-CkwZnTZ-UwYd4Mm7mx_ym1K_UndgD3dyj7sqoc9GOzWRDWoVJRFUCuPke5R-sc_DL7zPnEa4sKz3_w5YRL9xWfY0B5J-Kf4PckyD5A==',
+        'plantuml'),
+    KrokiExample(
+        'Gantt',
+        'Mermaid',
+        r'''gantt
     title A Gantt Diagram
     dateFormat  YYYY-MM-DD
     section Section
@@ -1414,12 +1410,12 @@ skinparam monochrome true
     Task in sec      :2014-01-12, 12d
     another task     :24d
 ''',
-          'GET https://kroki.io/mermaid/svg/eNpdTcsKwjAQvPsV8wENJLGn3ApBTz3pxeNiYg3aFNL9f8yjUnRYWHYeOxNF5gMyOPDbY8C5MLCBpkRzVRyxPy1pJgZuGWIchbVVWv2dwxJxabtyA5jWF3YYUh20VL2QKk-Ho3TNGRd--rT7DT0436SAknA_HZu7cteSCLFoW8f3v9Ilq3TL0n8DDHTvPoXCQLE=',
-          'mermaid'),
-      KrokiExample(
-          'Syntax diagram',
-          'Pikchr',
-          r'''$r = 0.2in
+        'GET https://kroki.io/mermaid/svg/eNpdTcsKwjAQvPsV8wENJLGn3ApBTz3pxeNiYg3aFNL9f8yjUnRYWHYeOxNF5gMyOPDbY8C5MLCBpkRzVRyxPy1pJgZuGWIchbVVWv2dwxJxabtyA5jWF3YYUh20VL2QKk-Ho3TNGRd--rT7DT0436SAknA_HZu7cteSCLFoW8f3v9Ilq3TL0n8DDHTvPoXCQLE=',
+        'mermaid'),
+    KrokiExample(
+        'Syntax diagram',
+        'Pikchr',
+        r'''$r = 0.2in
 linerad = 0.75*$r
 linewid = 0.25
 
@@ -1476,12 +1472,12 @@ box "print-args" italic fit
 line right until even with X9 - ($r,0) \
   then up until even with X9 then to X9
 ''',
-          'GET https://kroki.io/pikchr/svg/eNq1VLFu2zAQ3fkVB8UB2rRWZTlqIgMdHCBDAKMo0iDw4IW2aIkNTQokbbl_3yMpOXLtABnaQSB4d3z33jtSAw3fIIlTLongkmla-P1NdjXQPtLwEEkzQi7gp6XaApUFMPyWQq1eDLkgS7WHiAm2YdJGsFSigDW3_jwUqpGQJZew1moDghqLBfvYNKRQFlzD1GVXSiiNiHT1QubJxBfGDD7BhyQef04-Eqq1anog7rRVME_IRu0YaF5WFsZxjkocHcc7uwSMpbisuRAdeN6CNzA8Bz7PHeyBZ0Oc7qeKwYZyCXorGNiKWigVM2Cspr6xrbTallWAMN4lRFlzyU3VGaSWv9jKDgvmwpYrGQG3VPCVMwsQcjT6MvoKDf0NS2YbxiSq82bP85ahE5wfsU3-ZhvIzqZ397OJp4vtw4Fg0UC_nqywhZ_PCOeLEw-Rro6oHRUQBSxc3UgDEg6sTS6iySLqp9IEc15urcyJylAULkZos5WWC2A77NtwWzn7cSwDjVOBBYHAaFufq_OpE0e8F45czA5KrpI4OyD57W0_dxsIdbnrrJ-8znqudPY-Tx8fpneze3wa77U4jd92-ADXd_KmM5Iaw0vp3tZQ1fhErdKnnr6Ws319nP_nbrcm_Hh8-P70bv3j8FM5a8AiqjWX9ugmtZfIxYdUl-a_SvoDVDiU0w==',
-          'pikchr'),
-      KrokiExample(
-          'Mind Map',
-          'PlantUML',
-          r'''@startmindmap
+        'GET https://kroki.io/pikchr/svg/eNq1VLFu2zAQ3fkVB8UB2rRWZTlqIgMdHCBDAKMo0iDw4IW2aIkNTQokbbl_3yMpOXLtABnaQSB4d3z33jtSAw3fIIlTLongkmla-P1NdjXQPtLwEEkzQi7gp6XaApUFMPyWQq1eDLkgS7WHiAm2YdJGsFSigDW3_jwUqpGQJZew1moDghqLBfvYNKRQFlzD1GVXSiiNiHT1QubJxBfGDD7BhyQef04-Eqq1anog7rRVME_IRu0YaF5WFsZxjkocHcc7uwSMpbisuRAdeN6CNzA8Bz7PHeyBZ0Oc7qeKwYZyCXorGNiKWigVM2Cspr6xrbTallWAMN4lRFlzyU3VGaSWv9jKDgvmwpYrGQG3VPCVMwsQcjT6MvoKDf0NS2YbxiSq82bP85ahE5wfsU3-ZhvIzqZ397OJp4vtw4Fg0UC_nqywhZ_PCOeLEw-Rro6oHRUQBSxc3UgDEg6sTS6iySLqp9IEc15urcyJylAULkZos5WWC2A77NtwWzn7cSwDjVOBBYHAaFufq_OpE0e8F45czA5KrpI4OyD57W0_dxsIdbnrrJ-8znqudPY-Tx8fpneze3wa77U4jd92-ADXd_KmM5Iaw0vp3tZQ1fhErdKnnr6Ws319nP_nbrcm_Hh8-P70bv3j8FM5a8AiqjWX9ugmtZfIxYdUl-a_SvoDVDiU0w==',
+        'pikchr'),
+    KrokiExample(
+        'Mind Map',
+        'PlantUML',
+        r'''@startmindmap
 skinparam monochrome true
 + OS
 ++ Ubuntu
@@ -1500,12 +1496,12 @@ skinparam monochrome true
 --- Windows 10
 @endmindmap
 r''',
-          'GET https://kroki.io/plantuml/svg/eNpVjz0LwjAQhvf8ittDQQehbh3aqR-CVXS92oDB5hLygfrvTdvBdLrn4eWOewvn0XolaVRomHtJMmhRgdKkH0-rlQBvg2AcTj3jHK5DIB8icWgkhQ-0kvyidUiihOuygk5omrebtqzm2evpO97rBb1Atd4-ozODRGJZBrf4kX47OB42lqfWXaL9Nd_YfscKEVutzX7LvUZt',
-          'plantuml'),
-      KrokiExample(
-          'BPMN',
-          'BPMN',
-          r'''<?xml version="1.0" encoding="UTF-8"?>
+        'GET https://kroki.io/plantuml/svg/eNpVjz0LwjAQhvf8ittDQQehbh3aqR-CVXS92oDB5hLygfrvTdvBdLrn4eWOewvn0XolaVRomHtJMmhRgdKkH0-rlQBvg2AcTj3jHK5DIB8icWgkhQ-0kvyidUiihOuygk5omrebtqzm2evpO97rBb1Atd4-ozODRGJZBrf4kX47OB42lqfWXaL9Nd_YfscKEVutzX7LvUZt',
+        'plantuml'),
+    KrokiExample(
+        'BPMN',
+        'BPMN',
+        r'''<?xml version="1.0" encoding="UTF-8"?>
 <semantic:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:semantic="http://www.omg.org/spec/BPMN/20100524/MODEL" id="_1275940932088" targetNamespace="http://www.trisotech.com/definitions/_1275940932088" exporter="Camunda Modeler" exporterVersion="1.16.0">
   <semantic:message id="_1275940932310" />
   <semantic:message id="_1275940932433" />
@@ -1889,12 +1885,12 @@ r''',
   </bpmndi:BPMNDiagram>
 </semantic:definitions>
 r''',
-          'GET https://kroki.io/bpmn/svg/eNrNXF9znLYWf8-nYPY9XiEJAZ7YmSZ2b-_cJPU0aadvHgzyLpNd2AtsbOepH6RzP1w_yZXEf5BAUJtuX9KKo6PzO_-PtM2bt4_7nfGNJmkYRxcr8wysDBr5cRBGm4vVr19-fO2s3l6-epPSvRdloX8e0PswCjNGnRpsa5SeP6bhxWqbZYfz9frh4eHsAZ3FyWYNATDXv3_88Nnfsr2vwyjNvMinq2JX0N4U7zdiV3qg_vrqiu02AbAgXl_9u9xxd9hHQ7ve3Xz8JNsX-JonvS93lGB1z_r489X1h5URBherWxPalouBiyBwnJWRecmGZp-8PU0Pnk9bHLMkTOOM-tszP96vG4pdd7nQx0OcZDS5WL339sco8IyPcUB3NKk__Vab0CTMipevDKO2Gjs-9Ta0KyIymbnXWqQYoR7pIYl9Rp2TktcmU0F6_Uj9Y-bd7RjWe2-XUiFJc9fOi-hnmoldu5Ttw8gpiLpkJWdiMTkjpsSLlc9Qf63Imxvud_HDJ6aWX-j95c9JQJNfqE_DbzS4_kaj7M1aSjjCR5wN5--18by9773d_v0xzeI9Tb546ddhLo2vXGvDusSYlLo8hN-_ewaLz_uVBhhM0LOK4ZRiME9mZkqejLv4SUcQy8SzLWIRa741TTJDAZ1F5vndgGCJMcmEkwrl9H23VJT4YiTFJ0nMxMdsE7PMLaRFoHF09aW3p4h3cdBVlYOMYpmhU2SMFrIaQhfcwUu83Y7u_uVl9MF7qiMalqgkOEJWgfZSHNWXYeyuqYW9vQcp9zQ-dPB04YYRy8V7GoTs83sv87e1XfN8UKL-64__PWxpwuIhNfZPhgjFt3_98eeYNlrI1Npo7rExmaxBGzsv4D11EWnpVK60rmozlgeFIrvJsVQpXzf84sNqTCfODJ0QHQ_hciplz_NoKfE77ys1si3NzT9qejQ9EBB8DpFZxi1FvsqTtb7ULQl0pcbPIjWxSqmLdGocvKc9T6hjMuMZMs92DhoF7SxhEu3cqBfZPLzCiEVXN077sVgK0ytS9L9HNhjQH1nZqwRFVVu2MtL4mPh5xMsqWN4I5wmhSP9rvTOg9IwykNp8haNq8sUqvoJJhy93JU2-RMmXM-nogZtaj69rqvgKZXb42tp6cNEEvkLlWnxtLNdDP3nPldyuO8ie5Hbbgv1D80lm3R1ltEYh03XGRiGoNwp1Oj_hECWmn47RhvXE93GizLPN_GNCSyf_qBu1KnN-ZoOln_1www9tltd83fC00n5bHL0UatrOc6R9Zqh2w6wpsT29I8AQzE763AbvvJQGnc7YdIBm9m-frtcL4hndNIZwcjeNoVYJ72lhWj8NAWzPsgOzUVtzcIYWXqIjrnPJjI54RDmmWyqHAIMBPGY0HVUMnqEYoqWYLGTZt6MW2dTN6a4YolIt7VBSMpk_T3Bd1VX7B7bKk65ug9uGr6kyBJ4j0yFQ9TA3LIHoSzwj0z1PS46sqiW_9jJ9iWc05Pj5GnIMSLMqs5KSelmY3ofjiWagQZ_ZdLPKqmx7zFbX0y_kWn0VK4TSA_rs2p2bqLtaJ7DCpYIgmHT4OkCbr3JWEEzafEXx0OSLp_DleVeTr3JWEEw6fBHR5qvsjAXoNl-RRfT4IqXdhHCz7aaexYRwHXktS5uvUr-CSWe2AURzLvDj3c67ixNPVHZxJVVXdMuyV5JLUPZHePDqnGJVY5cIKKMcT1ZGcWSlWQlYCT_-iNJiyPJJEPfZmRJ2RW_SHmOddmcV81Z6LFplg7_WaRhOcCz5iChlW9lfNIaHTGMkl4eDlHulon0c0ScN15VfI0h5g5b6Na4o5OlMwtu2wKzJvM4_jfhohYL4lj_TnvMX0qvQ2yTeXhz8pXrs_C1Mw_j1bWWaXxmjbEcDoyBfGUHsH_k1nWDKpUxoGu-O-X-55AzwfyCxAXQcUL4dNg--ES9NfOF6RzknRYS2d33eegcqE_a2iNcWw2ItTH-Kk_B7zKTdXayy5EibT1iBf_4uPkZBajxerExmoKf8j4cwyLbsXwFmdtzScLNlHKFbe15Xtg_eHd01O-Ku3JMBiYTRRSQWp0NCdo3JBVYNCSF7OUi35UtxF5VYnIAK91E5dgOVaeJlUYk3256t-OJ0VNghJ4NK5oHYmYOKAKBABdwFUckKYAuhhECFzHZze_F4KpDx_qsKLbB0ZEFZZEF1buA1jIeR61YAuLVKABguDIC3DT0AbFEFAJpOYQFcW6ABAC0JoF-d2-Wt-1kJioc_t0ozDaAaFHEWTgJEUlj5ohKAlUe8Bc2TACBasV5nYKrdChOcpyzongYA3pT2ALBFFQAC0EkBEI9ovcBmi8rMCouige1_PrCLe5u-_Gr95xHskpOoC72s2rsnUhcISwCx7ZNwIzHMds3AF5WZiJyW_I6k9eWLKvmRndc3F5xEfRYDbFd-vqiMAx6-XH7rJKJYXNn15GeLykKAc_2bDj4NAEiSR_miCoBl5gYwyWn0EuLGpQuAL6oLATmlCBaXkj35LXUldhA-JfnFDWqvlwNqB3ItsmQEXwebwTKMZXcHuJ1Aw_MH7-kQh1EmIgCQuhVaj9MhBw_SEYIm0TXfXKaoiGtijoaQTENoSENi_uZDFASDiMppsUf3wohcWe_lmkOIHKiFCAKgR1eOmQsjl92-8EW1pLaVpxvRuK3H6TBwhr0YAU06Ux5lL6sh8ZzYS2cQDmhI2JBryDQHEYl7Vg26ssXp0b20b8gmKr5YvCdw4rsd_U8YMR5RHN2Kn2J4WRhtBrRDLEcrW5Z0uFsAun5WRqImXc9vX9p_ZPebcCjCSHHpN-YXZeOysF_YspxhD-YMaGlmQeLo0RX3VwtnS3Fc35ZDlQ9hvRhHhOjR2c4_kgtkUwHpTAUdLy5sRBq_FpZ6McB6dOV9TZfuhb1d9pbEFwdsBJ36dnWtQYeHK59lw0l0EOFFo0LmG3jQN1xTLypcpBcV5QixeFTIXkPQUG-AUH5dZFnD3ROy0CS6seip7puXjR7xP1j0NYSHpqkiY44hqi6gl0UkfnnXvyC0hrxdz4nF06sOXXFjurCzY9nYhwfHPlIMP2IIGjJlkQ606Sw4kgiJHh12tegQAZPoTrWIY1m6wnAwGC15SVHQIThMB4u7Kl06DJYtZRDLGryhdCUetrktR8aPkm7Mx8v74B7dSydq2UUAGmrqUXGdNXYRUNKNRY-Lp5CJX0Qs6RmyJgcONTnY0ct-2NXLfuVF-9Ke4SLZ5Rgauhwj-VUNxiOVrKCzrOFGuXrttxa1ufgNfK_U24ODLtRrbMtXw8VHdyIb3Ye8GNl6oztSjeQqOnu4ApiuOY3uNC9YsawBxoMNsGPqdRHlu8_f96HW8k35t5a0Vouf5V6-avzst_GXFV3-H5kvsko=',
-          'bpmn'),
-      KrokiExample(
-          'Bytefield',
-          'Bytefield',
-          r'''(defattrs :bg-green {:fill "#a0ffa0"})
+        'GET https://kroki.io/bpmn/svg/eNrNXF9znLYWf8-nYPY9XiEJAZ7YmSZ2b-_cJPU0aadvHgzyLpNd2AtsbOepH6RzP1w_yZXEf5BAUJtuX9KKo6PzO_-PtM2bt4_7nfGNJmkYRxcr8wysDBr5cRBGm4vVr19-fO2s3l6-epPSvRdloX8e0PswCjNGnRpsa5SeP6bhxWqbZYfz9frh4eHsAZ3FyWYNATDXv3_88Nnfsr2vwyjNvMinq2JX0N4U7zdiV3qg_vrqiu02AbAgXl_9u9xxd9hHQ7ve3Xz8JNsX-JonvS93lGB1z_r489X1h5URBherWxPalouBiyBwnJWRecmGZp-8PU0Pnk9bHLMkTOOM-tszP96vG4pdd7nQx0OcZDS5WL339sco8IyPcUB3NKk__Vab0CTMipevDKO2Gjs-9Ta0KyIymbnXWqQYoR7pIYl9Rp2TktcmU0F6_Uj9Y-bd7RjWe2-XUiFJc9fOi-hnmoldu5Ttw8gpiLpkJWdiMTkjpsSLlc9Qf63Imxvud_HDJ6aWX-j95c9JQJNfqE_DbzS4_kaj7M1aSjjCR5wN5--18by9773d_v0xzeI9Tb546ddhLo2vXGvDusSYlLo8hN-_ewaLz_uVBhhM0LOK4ZRiME9mZkqejLv4SUcQy8SzLWIRa741TTJDAZ1F5vndgGCJMcmEkwrl9H23VJT4YiTFJ0nMxMdsE7PMLaRFoHF09aW3p4h3cdBVlYOMYpmhU2SMFrIaQhfcwUu83Y7u_uVl9MF7qiMalqgkOEJWgfZSHNWXYeyuqYW9vQcp9zQ-dPB04YYRy8V7GoTs83sv87e1XfN8UKL-64__PWxpwuIhNfZPhgjFt3_98eeYNlrI1Npo7rExmaxBGzsv4D11EWnpVK60rmozlgeFIrvJsVQpXzf84sNqTCfODJ0QHQ_hciplz_NoKfE77ys1si3NzT9qejQ9EBB8DpFZxi1FvsqTtb7ULQl0pcbPIjWxSqmLdGocvKc9T6hjMuMZMs92DhoF7SxhEu3cqBfZPLzCiEVXN077sVgK0ytS9L9HNhjQH1nZqwRFVVu2MtL4mPh5xMsqWN4I5wmhSP9rvTOg9IwykNp8haNq8sUqvoJJhy93JU2-RMmXM-nogZtaj69rqvgKZXb42tp6cNEEvkLlWnxtLNdDP3nPldyuO8ie5Hbbgv1D80lm3R1ltEYh03XGRiGoNwp1Oj_hECWmn47RhvXE93GizLPN_GNCSyf_qBu1KnN-ZoOln_1www9tltd83fC00n5bHL0UatrOc6R9Zqh2w6wpsT29I8AQzE763AbvvJQGnc7YdIBm9m-frtcL4hndNIZwcjeNoVYJ72lhWj8NAWzPsgOzUVtzcIYWXqIjrnPJjI54RDmmWyqHAIMBPGY0HVUMnqEYoqWYLGTZt6MW2dTN6a4YolIt7VBSMpk_T3Bd1VX7B7bKk65ug9uGr6kyBJ4j0yFQ9TA3LIHoSzwj0z1PS46sqiW_9jJ9iWc05Pj5GnIMSLMqs5KSelmY3ofjiWagQZ_ZdLPKqmx7zFbX0y_kWn0VK4TSA_rs2p2bqLtaJ7DCpYIgmHT4OkCbr3JWEEzafEXx0OSLp_DleVeTr3JWEEw6fBHR5qvsjAXoNl-RRfT4IqXdhHCz7aaexYRwHXktS5uvUr-CSWe2AURzLvDj3c67ixNPVHZxJVVXdMuyV5JLUPZHePDqnGJVY5cIKKMcT1ZGcWSlWQlYCT_-iNJiyPJJEPfZmRJ2RW_SHmOddmcV81Z6LFplg7_WaRhOcCz5iChlW9lfNIaHTGMkl4eDlHulon0c0ScN15VfI0h5g5b6Na4o5OlMwtu2wKzJvM4_jfhohYL4lj_TnvMX0qvQ2yTeXhz8pXrs_C1Mw_j1bWWaXxmjbEcDoyBfGUHsH_k1nWDKpUxoGu-O-X-55AzwfyCxAXQcUL4dNg--ES9NfOF6RzknRYS2d33eegcqE_a2iNcWw2ItTH-Kk_B7zKTdXayy5EibT1iBf_4uPkZBajxerExmoKf8j4cwyLbsXwFmdtzScLNlHKFbe15Xtg_eHd01O-Ku3JMBiYTRRSQWp0NCdo3JBVYNCSF7OUi35UtxF5VYnIAK91E5dgOVaeJlUYk3256t-OJ0VNghJ4NK5oHYmYOKAKBABdwFUckKYAuhhECFzHZze_F4KpDx_qsKLbB0ZEFZZEF1buA1jIeR61YAuLVKABguDIC3DT0AbFEFAJpOYQFcW6ABAC0JoF-d2-Wt-1kJioc_t0ozDaAaFHEWTgJEUlj5ohKAlUe8Bc2TACBasV5nYKrdChOcpyzongYA3pT2ALBFFQAC0EkBEI9ovcBmi8rMCouige1_PrCLe5u-_Gr95xHskpOoC72s2rsnUhcISwCx7ZNwIzHMds3AF5WZiJyW_I6k9eWLKvmRndc3F5xEfRYDbFd-vqiMAx6-XH7rJKJYXNn15GeLykKAc_2bDj4NAEiSR_miCoBl5gYwyWn0EuLGpQuAL6oLATmlCBaXkj35LXUldhA-JfnFDWqvlwNqB3ItsmQEXwebwTKMZXcHuJ1Aw_MH7-kQh1EmIgCQuhVaj9MhBw_SEYIm0TXfXKaoiGtijoaQTENoSENi_uZDFASDiMppsUf3wohcWe_lmkOIHKiFCAKgR1eOmQsjl92-8EW1pLaVpxvRuK3H6TBwhr0YAU06Ux5lL6sh8ZzYS2cQDmhI2JBryDQHEYl7Vg26ssXp0b20b8gmKr5YvCdw4rsd_U8YMR5RHN2Kn2J4WRhtBrRDLEcrW5Z0uFsAun5WRqImXc9vX9p_ZPebcCjCSHHpN-YXZeOysF_YspxhD-YMaGlmQeLo0RX3VwtnS3Fc35ZDlQ9hvRhHhOjR2c4_kgtkUwHpTAUdLy5sRBq_FpZ6McB6dOV9TZfuhb1d9pbEFwdsBJ36dnWtQYeHK59lw0l0EOFFo0LmG3jQN1xTLypcpBcV5QixeFTIXkPQUG-AUH5dZFnD3ROy0CS6seip7puXjR7xP1j0NYSHpqkiY44hqi6gl0UkfnnXvyC0hrxdz4nF06sOXXFjurCzY9nYhwfHPlIMP2IIGjJlkQ606Sw4kgiJHh12tegQAZPoTrWIY1m6wnAwGC15SVHQIThMB4u7Kl06DJYtZRDLGryhdCUetrktR8aPkm7Mx8v74B7dSydq2UUAGmrqUXGdNXYRUNKNRY-Lp5CJX0Qs6RmyJgcONTnY0ct-2NXLfuVF-9Ke4SLZ5Rgauhwj-VUNxiOVrKCzrOFGuXrttxa1ufgNfK_U24ODLtRrbMtXw8VHdyIb3Ye8GNl6oztSjeQqOnu4ApiuOY3uNC9YsawBxoMNsGPqdRHlu8_f96HW8k35t5a0Vouf5V6-avzst_GXFV3-H5kvsko=',
+        'bpmn'),
+    KrokiExample(
+        'Bytefield',
+        'Bytefield',
+        r'''(defattrs :bg-green {:fill "#a0ffa0"})
 (defattrs :bg-yellow {:fill "#ffffa0"})
 (defattrs :bg-pink {:fill "#ffb0a0"})
 (defattrs :bg-cyan {:fill "#a0fafa"})
@@ -1970,12 +1966,12 @@ r''',
 (draw-gap "Unknown bytes" {:min-label-columns 6})
 (draw-bottom)
 ''',
-          'GET https://kroki.io/bytefield/svg/eNqllcuOmzAUhvd5iiPPJiyQgDDMDNt20327QixMMBfF2BRMQzri3WsM4T7MpYkUC_P59_F_znGOIYmwEEUJbhDrcUEIg1c3SikF9ICNKMIGarTDcYbdCKX8OnJRtM3lKbtMqcDYos43PN8TR3hDqypySkaO2MFj9NRyCmQQFvgqD8CrXKc4IFRPCA5JcQDwylzuoCZ9-XhUZMBrOApSi-4FeG6GRdLqcyb0Mv1LwLQaX5Mzarn6cQNeSM0SHl4bcBOSxokA0260eRQFybggYTAJ4ZKyEHARl2MEZ06rjPVMqQ3z6zPAI6BS4EKg96if9Y_v-9AJkLjlZB-yALWx7kOmVMJ3iEkn9UIWhfksvZiabNSmORaXtnj3_GSd7BdMwOt9tpsR9rVtpa7-tI1cdgaAyqW21OyWrUWNoVgXkgmpdSWrsme36afhKGs1w8KVqBENtf2WaOuwdLoX3aZldPak_BfW9mc2us8ZtSVZg-e5OcUpu9fytStTRNtBMpMCdxofEBxNS0P-yq5uS_-t8J0xdk-OtR6lRSnWK3lJfoP3B8sWc-SiEzj99-S3vbAt3uIL-YJQLJtqtsFqBwOMlap68Y7E4HdPUrw4imrwjd6WGbKfDAteBuBeqdrs2TINGwZ_tT32Y1ife0pYLBLUX1--HMsqAHO8t1Yq9izSz8vEOAf0rSKAZU9QznPIecoEBDdB2stgIs5SCspOeWu0_bpn0Mn51LlZlS2jRQkXaOfgH5U5V2Qh89U0WPtp-B8VlYVf7ML4lfXWSyhLWX9Hd38uJTiTfYXgmXb4BwBAgK8=',
-          'bytefield'),
-      KrokiExample(
-          'Digital Timing diagram',
-          'WaveDrom',
-          r'''{ signal: [
+        'GET https://kroki.io/bytefield/svg/eNqllcuOmzAUhvd5iiPPJiyQgDDMDNt20327QixMMBfF2BRMQzri3WsM4T7MpYkUC_P59_F_znGOIYmwEEUJbhDrcUEIg1c3SikF9ICNKMIGarTDcYbdCKX8OnJRtM3lKbtMqcDYos43PN8TR3hDqypySkaO2MFj9NRyCmQQFvgqD8CrXKc4IFRPCA5JcQDwylzuoCZ9-XhUZMBrOApSi-4FeG6GRdLqcyb0Mv1LwLQaX5Mzarn6cQNeSM0SHl4bcBOSxokA0260eRQFybggYTAJ4ZKyEHARl2MEZ06rjPVMqQ3z6zPAI6BS4EKg96if9Y_v-9AJkLjlZB-yALWx7kOmVMJ3iEkn9UIWhfksvZiabNSmORaXtnj3_GSd7BdMwOt9tpsR9rVtpa7-tI1cdgaAyqW21OyWrUWNoVgXkgmpdSWrsme36afhKGs1w8KVqBENtf2WaOuwdLoX3aZldPak_BfW9mc2us8ZtSVZg-e5OcUpu9fytStTRNtBMpMCdxofEBxNS0P-yq5uS_-t8J0xdk-OtR6lRSnWK3lJfoP3B8sWc-SiEzj99-S3vbAt3uIL-YJQLJtqtsFqBwOMlap68Y7E4HdPUrw4imrwjd6WGbKfDAteBuBeqdrs2TINGwZ_tT32Y1ife0pYLBLUX1--HMsqAHO8t1Yq9izSz8vEOAf0rSKAZU9QznPIecoEBDdB2stgIs5SCspOeWu0_bpn0Mn51LlZlS2jRQkXaOfgH5U5V2Qh89U0WPtp-B8VlYVf7ML4lfXWSyhLWX9Hd38uJTiTfYXgmXb4BwBAgK8=',
+        'bytefield'),
+    KrokiExample(
+        'Digital Timing diagram',
+        'WaveDrom',
+        r'''{ signal: [
   { name: "clk",         wave: "p.....|..." },
   { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
   { name: "Request",     wave: "0.1..0|1.0" },
@@ -1983,12 +1979,12 @@ r''',
   { name: "Acknowledge", wave: "1.....|01." }
 ]}
 ''',
-          'GET https://kroki.io/wavedrom/svg/eNqrVijOTM9LzLFSiOZSUKhWyEvMTbVSUErOyVbSUYCB8sQykGCBHgjUALGSQq0OsnKXxJJEhHqo8go9YxPTihpbvQqgVApQBdAOpYzUxBQgVykpP6USRJckZuaAaJC8UiyasUGphaWpxSVQk6HGGugZ6ukZ1BjqGcBcgarJMTk7L788JzUlPRWoEarJEOJ0A0OQ07liawGPW0Gr',
-          'wavedrom'),
-      KrokiExample(
-          'Connected Servers',
-          'Svgbob',
-          r'''
+        'GET https://kroki.io/wavedrom/svg/eNqrVijOTM9LzLFSiOZSUKhWyEvMTbVSUErOyVbSUYCB8sQykGCBHgjUALGSQq0OsnKXxJJEhHqo8go9YxPTihpbvQqgVApQBdAOpYzUxBQgVykpP6USRJckZuaAaJC8UiyasUGphaWpxSVQk6HGGugZ6ukZ1BjqGcBcgarJMTk7L788JzUlPRWoEarJEOJ0A0OQ07liawGPW0Gr',
+        'wavedrom'),
+    KrokiExample(
+        'Connected Servers',
+        'Svgbob',
+        r'''
                   .-,(  ),-.
    ___  _      .-(          )-.
   [___]|=| -->(                )      __________
@@ -1999,12 +1995,12 @@ r''',
                                 |____| |  |
                                 /::::/ |__|
 ''',
-          'GET https://kroki.io/svgbob/svg/eNqFj9ENgzAMRP8zhf-SSNj8I4VFKPIiN1Rn6GQcRoBaKrgPJ9G9nO0kF5l2RaR2aokvd2fZnXJiNfyJ_owGUR3Lb1LdDj_ED_0w9AJHOPkr0DQzRsfJzczX8nnP6TpgVitB__F2vc7WcdygzGPTGAiC1nDHhrDGkuXtkeW-28aOtACrBT_p',
-          'svgbob'),
-      KrokiExample(
-          'Ascii Art',
-          'Svgbob',
-          r'''
+        'GET https://kroki.io/svgbob/svg/eNqFj9ENgzAMRP8zhf-SSNj8I4VFKPIiN1Rn6GQcRoBaKrgPJ9G9nO0kF5l2RaR2aokvd2fZnXJiNfyJ_owGUR3Lb1LdDj_ED_0w9AJHOPkr0DQzRsfJzczX8nnP6TpgVitB__F2vc7WcdygzGPTGAiC1nDHhrDGkuXtkeW-28aOtACrBT_p',
+        'svgbob'),
+    KrokiExample(
+        'Ascii Art',
+        'Svgbob',
+        r'''
   _____
  /  O__]
 /  ___]
@@ -2015,12 +2011,12 @@ r''',
  \   \
  /   /
 ''',
-          'GET https://kroki.io/svgbob/svg/eNrjUlCIBwEuBX0FBf_4-FgFLn2wEJARo6CgAMRcCjVARg2MBqtU0OdSAEvDeAAtOA3-',
-          'svgbob'),
-      KrokiExample(
-          'Impossible trident',
-          'Pikchr',
-          r'''
+        'GET https://kroki.io/svgbob/svg/eNrjUlCIBwEuBX0FBf_4-FgFLn2wEJARo6CgAMRcCjVARg2MBqtU0OdSAEvDeAAtOA3-',
+        'svgbob'),
+    KrokiExample(
+        'Impossible trident',
+        'Pikchr',
+        r'''
 # Impossible trident pikchr script
 # https://en.wikipedia.org/wiki/Impossible_trident
 # pikchr script by Kees Nuyt, license Creative Commons BY-NC-SA
@@ -2071,12 +2067,12 @@ Rel_Neighbor(banking_system, mail_system, "Sends e-mails", "SMTP")
 Rel(banking_system, mainframe, "Uses")
 @enduml
 ''',
-          'GET https://kroki.io/c4plantuml/svg/eNp9UstuwjAQvOcrtpxAopz6ATwatUhAUQFVPUWLWYiFYyN7U-Dv6yROAEF7y-7O7M6M03eMlvNMRU9SC5VvCEYvychophP3DsUgmgy-P1bL5Gu8fE8m8Vs8e213ooglK4LF2TFlEAiwkbizmMHWWBj7ltXEMES9l3oXsFE0J-uMbovcscnIdqFVdVA10FGYtfxwADUSzBY4JVh7VBeOklM41MyiByiEyTW7XqsTVdfa62pj4srSr_tDVnlJKXN0zTkHbOBH0hGk9oYyZGk04NrkXMiQ9vZoF1BvIMM9wQHPGQUdQUgSn7idoVQXJfFzUYNr7i-9N1nK84amUljjzJYhPokU9Y6ArgkXj_VqvfXRk98zrb8feFywseQAlarTFL4BIaYHTps0uldO2aJ2KAqYr4hF6fST1NWr3iW_cuQ8zKOSIYr9FfQ2lwXpjQtmizcInBnJXbo29u5J_2GXjqfLebXiEbMJLajre7r_638BryMW3g==',
-          'c4plantuml'),
-      KrokiExample(
-          'Container diagram',
-          'C4 PlantUML',
-          r'''@startuml
+        'GET https://kroki.io/c4plantuml/svg/eNp9UstuwjAQvOcrtpxAopz6ATwatUhAUQFVPUWLWYiFYyN7U-Dv6yROAEF7y-7O7M6M03eMlvNMRU9SC5VvCEYvychophP3DsUgmgy-P1bL5Gu8fE8m8Vs8e213ooglK4LF2TFlEAiwkbizmMHWWBj7ltXEMES9l3oXsFE0J-uMbovcscnIdqFVdVA10FGYtfxwADUSzBY4JVh7VBeOklM41MyiByiEyTW7XqsTVdfa62pj4srSr_tDVnlJKXN0zTkHbOBH0hGk9oYyZGk04NrkXMiQ9vZoF1BvIMM9wQHPGQUdQUgSn7idoVQXJfFzUYNr7i-9N1nK84amUljjzJYhPokU9Y6ArgkXj_VqvfXRk98zrb8feFywseQAlarTFL4BIaYHTps0uldO2aJ2KAqYr4hF6fST1NWr3iW_cuQ8zKOSIYr9FfQ2lwXpjQtmizcInBnJXbo29u5J_2GXjqfLebXiEbMJLajre7r_638BryMW3g==',
+        'c4plantuml'),
+    KrokiExample(
+        'Container diagram',
+        'C4 PlantUML',
+        r'''@startuml
 !include C4_Container.puml
 
 LAYOUT_TOP_DOWN()
@@ -2111,12 +2107,12 @@ Rel_Back(email_system, backend_api, "Sends e-mails using", "sync, SMTP")
 Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 @enduml
 ''',
-          'GET https://kroki.io/c4plantuml/svg/eNqVVdtu2zAMfc9XcNlLBrgtBuwDmhvWFkmb1enaPRm0zCRCZcmQ5LTFsH8f5dhOnBS7-MmiycPDQ1K-dB6tL3PV-yC1UGVGMP6SjI32KDXZ8yJ86s2GP-4elsnybpFM7h5vB58ay-P18iqZTb9Obyds7HnpFQM00ZBJXFvMYWUsXGtPVpOHEepnqdcQvzlPea-3IOuMHojSeZOTjWDcvvWH0JjBrMBvCFKOjuBF-g0UVSCqygYohCm1d33msYNORmzI0L4NxGfGOibQ_wQ_e8BPy3fwQmmCRcHOj5TCsCiUFOil0X023eAWI4gLG8jPv4-DbUJKbplGRY2l9FKAYDjSHlBnlbnNmzaFL4ZMspvZFYzdj_mzorMFrilkb7LGwsrCRzDU61KhDeaFNVuZkQNU6v0sq1KLQB2V9G_gDStZCelgKzGESAtcL6TWvDiyJ4xyk0pFtRzz6tBwGn-M4AlzZCW6XEDJXHrKwJWpYy51z_6FmzshtyMAGW2loGN6k3SQoccUHYU21K-BTfxtBp2zN5a5lVwjWFpL5y1yapCapzKvuhvBhp0zwJKnSljKuH0SlYvCUJFzoMyaD-TF-YlMKYpn0hnrJMO8Lq7fH5uJYTe7j-vo9hd9giQMzKl_taM9ffUDylGqxFUGhpuezflcr1XAX7L0soLmHZlLYY0zKw_TV7FBzRO2i2TYA8yawR6VMfWKd5iO9vZA2jCCdacFG9oqDhQGTE3p922O2nWNgPuhHVb17kXu3ZM6uBL2i_ngyIXcV8vlImbHrt9ujf7s0xnsynWXLrklud6k5uAa2ME1S14jVcZu25uE6N60iOAmvru9OEx-mPK_IpMRe--J7Ue-i3JPmDlYWZNXt86L5SXkO8kE5Bp4Mho3dQbMAz2OxihmWAd0FqwVxp7I0cR1OXTjShdu2DZ9PF8uaqC2mE74ydw1woT4i1qdp_msFeeSQ_nf9BvklUnz',
-          'c4plantuml'),
-      KrokiExample(
-          'Container diagram',
-          'Structurizr',
-          r'''
+        'GET https://kroki.io/c4plantuml/svg/eNqVVdtu2zAMfc9XcNlLBrgtBuwDmhvWFkmb1enaPRm0zCRCZcmQ5LTFsH8f5dhOnBS7-MmiycPDQ1K-dB6tL3PV-yC1UGVGMP6SjI32KDXZ8yJ86s2GP-4elsnybpFM7h5vB58ay-P18iqZTb9Obyds7HnpFQM00ZBJXFvMYWUsXGtPVpOHEepnqdcQvzlPea-3IOuMHojSeZOTjWDcvvWH0JjBrMBvCFKOjuBF-g0UVSCqygYohCm1d33msYNORmzI0L4NxGfGOibQ_wQ_e8BPy3fwQmmCRcHOj5TCsCiUFOil0X023eAWI4gLG8jPv4-DbUJKbplGRY2l9FKAYDjSHlBnlbnNmzaFL4ZMspvZFYzdj_mzorMFrilkb7LGwsrCRzDU61KhDeaFNVuZkQNU6v0sq1KLQB2V9G_gDStZCelgKzGESAtcL6TWvDiyJ4xyk0pFtRzz6tBwGn-M4AlzZCW6XEDJXHrKwJWpYy51z_6FmzshtyMAGW2loGN6k3SQoccUHYU21K-BTfxtBp2zN5a5lVwjWFpL5y1yapCapzKvuhvBhp0zwJKnSljKuH0SlYvCUJFzoMyaD-TF-YlMKYpn0hnrJMO8Lq7fH5uJYTe7j-vo9hd9giQMzKl_taM9ffUDylGqxFUGhpuezflcr1XAX7L0soLmHZlLYY0zKw_TV7FBzRO2i2TYA8yawR6VMfWKd5iO9vZA2jCCdacFG9oqDhQGTE3p922O2nWNgPuhHVb17kXu3ZM6uBL2i_ngyIXcV8vlImbHrt9ujf7s0xnsynWXLrklud6k5uAa2ME1S14jVcZu25uE6N60iOAmvru9OEx-mPK_IpMRe--J7Ue-i3JPmDlYWZNXt86L5SXkO8kE5Bp4Mho3dQbMAz2OxihmWAd0FqwVxp7I0cR1OXTjShdu2DZ9PF8uaqC2mE74ydw1woT4i1qdp_msFeeSQ_nf9BvklUnz',
+        'c4plantuml'),
+    KrokiExample(
+        'Container diagram',
+        'Structurizr',
+        r'''
 workspace "Big Bank plc" "This is an example workspace to illustrate the key features of Structurizr, via the DSL, based around a fictional online banking system." {
 
     model {
@@ -2361,12 +2357,12 @@ workspace "Big Bank plc" "This is an example workspace to illustrate the key fea
     }
 }
 ''',
-          'GET https://kroki.io/structurizr/svg/eNrFWm1v2zgS_u5fQagf7i5wmpdNe7kF9g5O0t51kWyCKm33Ky3RNhFJ1Im0nWyR_34zJPVCSbTlONszghiWyHl5ZjgzHPLoYEQOyP2CSwJ_lEQinfKMxWTFCslFRsSMqAUjM5EkYs2zOVmL4kHmNGLyZ5iKsw9JcMHn5IJmDyRPIvgdPknFUnJNs1hGNGcB-etCqVz-fHQkVbGM1LLgfxRvgdmRXNCCHZ2enx6fHP2tn9qnTLEiY0o_QxEM-a1Ef3p_coZED45GldAu8YAEleoZYY80zRNWa0iUIDxJlkCeKqZxeGBPZMYo8GISsQlrzmOy4lQPugqvx2RKJcBIC7HM4IvMeKQAT5oQkSWAMLw3ykitzNuAfB-NCHxSEbMEfhD7iYC9SFlBfiE52ARMEtzpbyBVAnJpx4A-k3qCNR0yGpM1VwtLACbiM0KjCIRTEngHFYVRxZgh7HnBZQe0Wjj8yGWei0KFis5mDSFLiiRkxYoDmHpAgxWR9oXUM1FAnlUSo1Cao5nmcJzS6EHMZji35ncBD8mteVqymsQpz7g2H_oyuGMp7TCmDteU8mxW0BSZSjFTa_AxYzwS3FTv2j4ahEqgr9AkKQ0SwYPK_DBPFKmVbyqWqrKfHFcWGhNQIZNUuxD8YipCUT88gm4NZo64DORNekT9cKhfVPLdg0RcrzDwixseFQJnkA-P0YJmc0aYGV-56WauVKU9PCf3N2gNDCGy1g-XFxogLuiaRFQueqk75LkNBRZlG2e6DL0ho1eIFWfrHkOArXjhLpWx9qGUPjCS06eUmdXjrge9JoBnwu7onE3yPOGRIfsLmD5T4Crg_EGohxziGNIYBCLeFWLFY9dnKoVKv5ktMxtQuHpCJWqNbBgC2ddsSqYF6MsKxPZXuqJhVPBcaTUm2XyZUAwa32DchRkXdHRJxZQnqIcr_41-jKI7IpOEp1wxXGhTCfLuJb9hTWKGcQI1-J2mtOAIUoN9R2JQ2ws7qurCfcUSvtKesNCxSPFITwDjaph6xTcGBicA69GaXImynhhC8IShN18vuyLSnHtFnNx98nnEFhgROUp-DW9_O_rP_f1dSICUT6QerzWeO894dgnSFJDyddqBjJqLDOEAp51nIASp39dLaintckISBKOqcLFz1yLKVYtDPjOpmmR7hSuXYbhMwQ-efFJO7DBix7niVmDWHqeTIwWXNcONz7bX_ksEhojE1B2VEmqK2CfuZxxEylGbsdUErXS5nVHLb5wSBpMvn69fIq9kEdQyCpAtpXPNb1-T6n0TT9cXC5ZQjAPWIUyuGxOdVfBHJX2VzqywF4xm_dJVGdgJ_x9pRGPmCurLx8QM1nXSzMwDRIyf1vm9U5ptF01nWw9qNuM2MQsZVMY2tWq7agNv5fTceRJTRbHSdCPIlX1alx9IH0wyr4uhRr4bkwVkX6xWlwBEpsqoFBUsxp80MbUIk5IkYl5b7LagEThcyY6E0QKACBoCjPrFf67T-hvjKVjYLHguyZSpNWMZ1HUCi3Fds9nsbg0iu7Xx4T89pUHwFXK7LNcwWDahGehR53FZJXLACObVEvcTBE61owT_Zqom3qwgZoVI92JiyjfHUdpzzRAYW8HQ8augFyqnYg8m8kGS_y4hPKANcBIUhSxh-QK8tSbgTHJR-CKZ7OeE5WDwzdZ4Uhd5bS1wyCZyjWK_b5jXj5Q4QiPUy6LfbVq1AviL5GCmKZ_rDQHuJvnUykwCnVU9oPaWfHv4X5N4XYPtQbClql_muiIykbGU5C-yWVEOwt6GvBr7fpZallbhAUEctcFqKIJK2HpmXdwE22n664VXIO7L7cNJ11bdT3-Hzmvo7BDcX8-Oaqhup9JorXu_Hs0w0FcJtAj55B8ixIa5rYzfmtilDFOqZA0lH4U4rdcIrts1DGUlgFcXjf3CRkXdeNhrjt9vrtvWaAm-OddUs2KWJ0LHlQ_ZihciS7XWV2zFEpGnuqxxdxT1jN8EWsUOBfSuaa4EbhtxH1d1HL7xLMZa9-SYiEJvgLAmi27Dvq1Km3hzB6vpXi4AXDYmH3nBZuJxTEI6g63jGGl_iOfMt_-JSynDvnX_KYMNYhY55Vb1rDdSDKnh2kCJ6AFQuqzquUOC6mEfrdTODPHr4BKc5BQKM3IvUpDJEHAekfO3jz5aDibfnAyyEQw32WwnPXE2xBtJu3vnXtLPrwN7Xdi-GPteErZuPjmNBsFe0tiIShlcXoTH88aV22qZB60OPXImkW4X67fbV6utrg5Bw-PjE0PSM1UHU1v_m-BXaVzFvq3K9e07PAHtGiqfbZHssq6HnA5VubQwcvHbUIexLC4Ej_s0wxrrpky0G01bpeMdbNaQEauwZWmcnoD7f4y2iMGPCbTPo1dz8eH-DUHw4ODA0PsyhWpmSU7evz0-I9f3oX569oMiOOL8usH7JRG2hAUC-GZYzn8gLH9-4hkeDqdlMOyi0q9EXnAsjssEYXIMyN7mYBPOIbkzE3ZJQwjSncvnz0tEW-A59TrNRyhaxcqfl6EgF1m8E1ZhOaWL1lZ2VXBrsx0EXYP-q6OYFyL-sUnX76hmC9ZrF9gimZUGexodfZvNLMPKsljphkithGkSJuXdA9jX6AeNywjfW2eKUbIEhA7cg8ylEtf0SSxVX_FgeOhTokflaz2a70szaCDXjNsGYtcovVw6o8pezcjbPB_19q43lBaboajbzh4YqoJa7o9B1ROr971d6bu9rmHns_6Tzy3Hd96u_B6gltvz1kFhUG3cXwHN_tZW3fypwpFpEPg9qNPg6bQ_RsOP8ja1PEZDD9jcJseL7RA_ZTTlUccKeA76CU9mjfhcQpRaiLU5QrbHn_aakLlOROwtEwP5Yc-5cetSzfA2abicptiybpzWOMFyhw7cV5rwWIfcJrFWG3lAe0uyhEWKHJgOlzm8XC9Yoc8mi8zcofmXS7Ka3S_aZwZgZvYgq5MQvDJ14SoJqWIJuzRzO8Eef5VHkuCCCopIOQDD_ga66aThyQXeK2udqinxwLKO9Fv8sErmvijrNOKav66qqfsHjGHNsdGu_aMtTaDR4MbIy9f5VnxNX0B_vSaiWzfAw9oGox02fP5Nz2iH0n-0U7X7YsNI9ZQw2QIOootp1piLkH0VbCQSUZA3M_3pvJ3BIg75H4ycnnZz2QKLRkN5g9iVDPXdy64UGAHm5gbom-Pzs9O_T4dQbNxA3ELzH_ozhGZYHqGXF-E2Ez45eX8-jXdA1cO2fZtvd31exLYqObcxPPvpPI7f7c_QaYh99_gUDLJjhpBs3q_zUTRjrnTzsdrfDCFeXxDxkb58SngWDxO1cbNlM9zn76bT2bEP7mP9GcJw0-5b5DTC-0en77x3T8z_5_8B4cj34g==?view-key=Containers',
-          'structurizr'),
-      KrokiExample(
-          'Component diagram#',
-          'C4 PlantUML',
-          r'''@startuml
+        'GET https://kroki.io/structurizr/svg/eNrFWm1v2zgS_u5fQagf7i5wmpdNe7kF9g5O0t51kWyCKm33Ky3RNhFJ1Im0nWyR_34zJPVCSbTlONszghiWyHl5ZjgzHPLoYEQOyP2CSwJ_lEQinfKMxWTFCslFRsSMqAUjM5EkYs2zOVmL4kHmNGLyZ5iKsw9JcMHn5IJmDyRPIvgdPknFUnJNs1hGNGcB-etCqVz-fHQkVbGM1LLgfxRvgdmRXNCCHZ2enx6fHP2tn9qnTLEiY0o_QxEM-a1Ef3p_coZED45GldAu8YAEleoZYY80zRNWa0iUIDxJlkCeKqZxeGBPZMYo8GISsQlrzmOy4lQPugqvx2RKJcBIC7HM4IvMeKQAT5oQkSWAMLw3ykitzNuAfB-NCHxSEbMEfhD7iYC9SFlBfiE52ARMEtzpbyBVAnJpx4A-k3qCNR0yGpM1VwtLACbiM0KjCIRTEngHFYVRxZgh7HnBZQe0Wjj8yGWei0KFis5mDSFLiiRkxYoDmHpAgxWR9oXUM1FAnlUSo1Cao5nmcJzS6EHMZji35ncBD8mteVqymsQpz7g2H_oyuGMp7TCmDteU8mxW0BSZSjFTa_AxYzwS3FTv2j4ahEqgr9AkKQ0SwYPK_DBPFKmVbyqWqrKfHFcWGhNQIZNUuxD8YipCUT88gm4NZo64DORNekT9cKhfVPLdg0RcrzDwixseFQJnkA-P0YJmc0aYGV-56WauVKU9PCf3N2gNDCGy1g-XFxogLuiaRFQueqk75LkNBRZlG2e6DL0ho1eIFWfrHkOArXjhLpWx9qGUPjCS06eUmdXjrge9JoBnwu7onE3yPOGRIfsLmD5T4Crg_EGohxziGNIYBCLeFWLFY9dnKoVKv5ktMxtQuHpCJWqNbBgC2ddsSqYF6MsKxPZXuqJhVPBcaTUm2XyZUAwa32DchRkXdHRJxZQnqIcr_41-jKI7IpOEp1wxXGhTCfLuJb9hTWKGcQI1-J2mtOAIUoN9R2JQ2ws7qurCfcUSvtKesNCxSPFITwDjaph6xTcGBicA69GaXImynhhC8IShN18vuyLSnHtFnNx98nnEFhgROUp-DW9_O_rP_f1dSICUT6QerzWeO894dgnSFJDyddqBjJqLDOEAp51nIASp39dLaintckISBKOqcLFz1yLKVYtDPjOpmmR7hSuXYbhMwQ-efFJO7DBix7niVmDWHqeTIwWXNcONz7bX_ksEhojE1B2VEmqK2CfuZxxEylGbsdUErXS5nVHLb5wSBpMvn69fIq9kEdQyCpAtpXPNb1-T6n0TT9cXC5ZQjAPWIUyuGxOdVfBHJX2VzqywF4xm_dJVGdgJ_x9pRGPmCurLx8QM1nXSzMwDRIyf1vm9U5ptF01nWw9qNuM2MQsZVMY2tWq7agNv5fTceRJTRbHSdCPIlX1alx9IH0wyr4uhRr4bkwVkX6xWlwBEpsqoFBUsxp80MbUIk5IkYl5b7LagEThcyY6E0QKACBoCjPrFf67T-hvjKVjYLHguyZSpNWMZ1HUCi3Fds9nsbg0iu7Xx4T89pUHwFXK7LNcwWDahGehR53FZJXLACObVEvcTBE61owT_Zqom3qwgZoVI92JiyjfHUdpzzRAYW8HQ8augFyqnYg8m8kGS_y4hPKANcBIUhSxh-QK8tSbgTHJR-CKZ7OeE5WDwzdZ4Uhd5bS1wyCZyjWK_b5jXj5Q4QiPUy6LfbVq1AviL5GCmKZ_rDQHuJvnUykwCnVU9oPaWfHv4X5N4XYPtQbClql_muiIykbGU5C-yWVEOwt6GvBr7fpZallbhAUEctcFqKIJK2HpmXdwE22n664VXIO7L7cNJ11bdT3-Hzmvo7BDcX8-Oaqhup9JorXu_Hs0w0FcJtAj55B8ixIa5rYzfmtilDFOqZA0lH4U4rdcIrts1DGUlgFcXjf3CRkXdeNhrjt9vrtvWaAm-OddUs2KWJ0LHlQ_ZihciS7XWV2zFEpGnuqxxdxT1jN8EWsUOBfSuaa4EbhtxH1d1HL7xLMZa9-SYiEJvgLAmi27Dvq1Km3hzB6vpXi4AXDYmH3nBZuJxTEI6g63jGGl_iOfMt_-JSynDvnX_KYMNYhY55Vb1rDdSDKnh2kCJ6AFQuqzquUOC6mEfrdTODPHr4BKc5BQKM3IvUpDJEHAekfO3jz5aDibfnAyyEQw32WwnPXE2xBtJu3vnXtLPrwN7Xdi-GPteErZuPjmNBsFe0tiIShlcXoTH88aV22qZB60OPXImkW4X67fbV6utrg5Bw-PjE0PSM1UHU1v_m-BXaVzFvq3K9e07PAHtGiqfbZHssq6HnA5VubQwcvHbUIexLC4Ej_s0wxrrpky0G01bpeMdbNaQEauwZWmcnoD7f4y2iMGPCbTPo1dz8eH-DUHw4ODA0PsyhWpmSU7evz0-I9f3oX569oMiOOL8usH7JRG2hAUC-GZYzn8gLH9-4hkeDqdlMOyi0q9EXnAsjssEYXIMyN7mYBPOIbkzE3ZJQwjSncvnz0tEW-A59TrNRyhaxcqfl6EgF1m8E1ZhOaWL1lZ2VXBrsx0EXYP-q6OYFyL-sUnX76hmC9ZrF9gimZUGexodfZvNLMPKsljphkithGkSJuXdA9jX6AeNywjfW2eKUbIEhA7cg8ylEtf0SSxVX_FgeOhTokflaz2a70szaCDXjNsGYtcovVw6o8pezcjbPB_19q43lBaboajbzh4YqoJa7o9B1ROr971d6bu9rmHns_6Tzy3Hd96u_B6gltvz1kFhUG3cXwHN_tZW3fypwpFpEPg9qNPg6bQ_RsOP8ja1PEZDD9jcJseL7RA_ZTTlUccKeA76CU9mjfhcQpRaiLU5QrbHn_aakLlOROwtEwP5Yc-5cetSzfA2abicptiybpzWOMFyhw7cV5rwWIfcJrFWG3lAe0uyhEWKHJgOlzm8XC9Yoc8mi8zcofmXS7Ka3S_aZwZgZvYgq5MQvDJ14SoJqWIJuzRzO8Eef5VHkuCCCopIOQDD_ga66aThyQXeK2udqinxwLKO9Fv8sErmvijrNOKav66qqfsHjGHNsdGu_aMtTaDR4MbIy9f5VnxNX0B_vSaiWzfAw9oGox02fP5Nz2iH0n-0U7X7YsNI9ZQw2QIOootp1piLkH0VbCQSUZA3M_3pvJ3BIg75H4ycnnZz2QKLRkN5g9iVDPXdy64UGAHm5gbom-Pzs9O_T4dQbNxA3ELzH_ozhGZYHqGXF-E2Ez45eX8-jXdA1cO2fZtvd31exLYqObcxPPvpPI7f7c_QaYh99_gUDLJjhpBs3q_zUTRjrnTzsdrfDCFeXxDxkb58SngWDxO1cbNlM9zn76bT2bEP7mP9GcJw0-5b5DTC-0en77x3T8z_5_8B4cj34g==?view-key=Containers',
+        'structurizr'),
+    KrokiExample(
+        'Component diagram#',
+        'C4 PlantUML',
+        r'''@startuml
 !include C4_Component.puml
 
 LAYOUT_WITH_LEGEND()
@@ -2397,12 +2393,12 @@ Rel(ma, sign, "Uses", "JSON/HTTPS")
 Rel(ma, accounts, "Uses", "JSON/HTTPS")
 @enduml
 ''',
-          'GET https://kroki.io/c4plantuml/svg/eNqlVduO2jAQfc9XTHmoQKLbl37Actl2d7UXtLC9PKGJMwS3vkS2A0VV_71jB0igq2qlIiEc-_jM8ZnjcOkDulBrlb2RRqi6IJh8WE6srqwhEy6quJTdjb49Pi-WX24W18u7q09XD9P-IMuCDIrhBywUEkuHGlbWwY0J5AwFGKP5IU0J850PpOEdjGY3MKoqJQUGaU2WTawJKA25vq9wCL05w5l3hiV1gT1e-o4b9MLJKgCagr9lrdDFlZmzG1mQB1QKwppAHgTkewGr2ojIg0qGHQQLovbBanIeNhLjHulgSznkzm49uYveoCNNR2X3NpcqiYolv6JGJ81pdVBSy0AF-Dr3XN2G_1Cjm3r7n4I2UtCJrGneL3KuP8WAOXqKWp5IYcMMh2mYizVpjKvzYB3rrPmA4KiUPriEZoXcNp3GQ1ijX_MZsGYdJuwbAMJRER9R-SGgEOQ9KFvyAwURdTU9Xl79DH2d-2gYq1xxJOgsBh0lsV92lUwSPHE0qKMHMLd1aB1KxW1tAo9YvvGYrGx1tAYtx4wr0O36WEkueha-3gB-ZcCfY4j7XpYmhbA0HGKITM4qRSll958n8EQ-tNNxdqQUJyZ56mMrIwXrj8MXe-8bDwZnldtD9Ub7IcxrzSHbvUrGMYRtlLYyrDmTnlksszQ-c7CikqOJfwnxJGrHsYw27Iftampd5eI5xoSn6T8NtYtB5BQlR0zZNHUIYo3NQ4Xeb60r2r6dyuAIrVBgQf8IEnxMiBdEjaDZDGxR0wd95DhtREpMLM03Z9_-jgPPng4OxfW2SV15Z6B2e7qdT4QFvIUtTxG7EdXdTseTzoYOV3NxEmF8x9zfvb9eLGZzBv_OskQeX5L7lB5gt_PHhyPuCOoE6kVgQupXsOlXkF2SKfi_4g-amyCN',
-          'c4plantuml'),
-      KrokiExample(
-          'State machine',
-          'UMlet',
-          r'''<?xml version="1.0" encoding="UTF-8"?>
+        'GET https://kroki.io/c4plantuml/svg/eNqlVduO2jAQfc9XTHmoQKLbl37Actl2d7UXtLC9PKGJMwS3vkS2A0VV_71jB0igq2qlIiEc-_jM8ZnjcOkDulBrlb2RRqi6IJh8WE6srqwhEy6quJTdjb49Pi-WX24W18u7q09XD9P-IMuCDIrhBywUEkuHGlbWwY0J5AwFGKP5IU0J850PpOEdjGY3MKoqJQUGaU2WTawJKA25vq9wCL05w5l3hiV1gT1e-o4b9MLJKgCagr9lrdDFlZmzG1mQB1QKwppAHgTkewGr2ojIg0qGHQQLovbBanIeNhLjHulgSznkzm49uYveoCNNR2X3NpcqiYolv6JGJ81pdVBSy0AF-Dr3XN2G_1Cjm3r7n4I2UtCJrGneL3KuP8WAOXqKWp5IYcMMh2mYizVpjKvzYB3rrPmA4KiUPriEZoXcNp3GQ1ijX_MZsGYdJuwbAMJRER9R-SGgEOQ9KFvyAwURdTU9Xl79DH2d-2gYq1xxJOgsBh0lsV92lUwSPHE0qKMHMLd1aB1KxW1tAo9YvvGYrGx1tAYtx4wr0O36WEkueha-3gB-ZcCfY4j7XpYmhbA0HGKITM4qRSll958n8EQ-tNNxdqQUJyZ56mMrIwXrj8MXe-8bDwZnldtD9Ub7IcxrzSHbvUrGMYRtlLYyrDmTnlksszQ-c7CikqOJfwnxJGrHsYw27Iftampd5eI5xoSn6T8NtYtB5BQlR0zZNHUIYo3NQ4Xeb60r2r6dyuAIrVBgQf8IEnxMiBdEjaDZDGxR0wd95DhtREpMLM03Z9_-jgPPng4OxfW2SV15Z6B2e7qdT4QFvIUtTxG7EdXdTseTzoYOV3NxEmF8x9zfvb9eLGZzBv_OskQeX5L7lB5gt_PHhyPuCOoE6kVgQupXsOlXkF2SKfi_4g-amyCN',
+        'c4plantuml'),
+    KrokiExample(
+        'State machine',
+        'UMlet',
+        r'''<?xml version="1.0" encoding="UTF-8"?>
 <umlet_diagram>
     <element>
         <type>com.umlet.element.base.Relation</type>
@@ -2756,8 +2752,7 @@ validity
     </element>
 </umlet_diagram>
 ''',
-          'GET https://kroki.io/umlet/svg/eNrdWUFv2jAYvedXRBym7lBiJ05ChEkvU7Ve1047VFNlEgNZQ4IcU8q_n51ip5SujRHNoAcwmCTye9_3vvfZWPjicZ7bD5RVWVmMerAPejYtkjLNiumo9_Pm8nzQu4jxcp5TfpdmZMrIPMY0p3Na8Bjz9YLGSTnv1xf0N_P9Malo_wfNCRdPxU59FU7KkonHEk6rGD_GoRdh5zHG6xgG2FnHeBW7noudVYxnsRsg7Mxi7GzdtCAFze8I5ywbL-VMzkdfcj48t1YzWpxViywVQGhRlWzUYyUXd_W-Ws44L5N7--lX7Ow8BJM0zeRCydY0DODQRWgoRw8NQ_UeipW9fgd2NC_vEZQsKy4mLwWy_Fqu8x8kDSKwIckNgGIJKJJAG47aI-aMFNWCMLHAa7HQRF4xmpC8ogdA3ColfIUWhgotDBRc6IVGOUEmnDL7DIJK5IC9ZxIgMIQADINADZL0Q4X_rch7SHGBXM0FUFygVqFfkYwfSfg3iL9nYmDrt4C7ngaOPn_KP0OryyD0FFzfrAoyWnHCDELuAlnUIJRDV4BDBdiLFOBoT7wLspSBaos2rNG6BwLbtoTrCo7A509nFCi78nU2Q6QKuKGpbxVwns1puTTIbV8ktrBvMYigR6jDDNeSFsJSJOgUr53NgARj3CK_oQ9qUatRToWgM-sKgSIg0vgHGj9ohZ8kCV1wa1wSedHUXpCqss7PLbEEtnZsJpYjQmEn4mcrLR313dTfXxUMZ8uu9OJrl4fPzM4340rnyq1kiRZToZpxWd7T9LdJu_uUJ-I1qD8NQFc1Q3d9rtaLKzcHTxxEe3NQlNycBxdGtVgiPXQlm6BxRl_rRluF34oGRv-IJN6WzSnZx0DLwdMUIHdPOYh2aJlzu5zYFSUsmRl0ClCKQLy7oPO2qNn5-GbdvsJtoHmvVrp7WGu4mTFKf5F169L3TPYn2Ri10DbUYINXwuu21DZJ7ZeGeBxW14IBBHYZ0E1BuxqfzKjYwuv63rQD9a5nI3LZDYzzrLi3czJfHBU9724VYNhsBj-_JBrbR_secEhJWI3hX307Rfiety980esWPJusGwpOyOvrg70XR5vIrCCYO56wuvBwhmcGE4IdmOHHwfT_F8ymedUwBx8HM-gYJto9oQ4HeyWtdftA8sxka-JFMnm97nYkTY2C_r41qjZtq4aa8fVx1eerQjymrSXDIz--c7b_o7P-At8zCQE=',
-          'umlet'),
+        'GET https://kroki.io/umlet/svg/eNrdWUFv2jAYvedXRBym7lBiJ05ChEkvU7Ve1047VFNlEgNZQ4IcU8q_n51ip5SujRHNoAcwmCTye9_3vvfZWPjicZ7bD5RVWVmMerAPejYtkjLNiumo9_Pm8nzQu4jxcp5TfpdmZMrIPMY0p3Na8Bjz9YLGSTnv1xf0N_P9Malo_wfNCRdPxU59FU7KkonHEk6rGD_GoRdh5zHG6xgG2FnHeBW7noudVYxnsRsg7Mxi7GzdtCAFze8I5ywbL-VMzkdfcj48t1YzWpxViywVQGhRlWzUYyUXd_W-Ws44L5N7--lX7Ow8BJM0zeRCydY0DODQRWgoRw8NQ_UeipW9fgd2NC_vEZQsKy4mLwWy_Fqu8x8kDSKwIckNgGIJKJJAG47aI-aMFNWCMLHAa7HQRF4xmpC8ogdA3ColfIUWhgotDBRc6IVGOUEmnDL7DIJK5IC9ZxIgMIQADINADZL0Q4X_rch7SHGBXM0FUFygVqFfkYwfSfg3iL9nYmDrt4C7ngaOPn_KP0OryyD0FFzfrAoyWnHCDELuAlnUIJRDV4BDBdiLFOBoT7wLspSBaos2rNG6BwLbtoTrCo7A509nFCi78nU2Q6QKuKGpbxVwns1puTTIbV8ktrBvMYigR6jDDNeSFsJSJOgUr53NgARj3CK_oQ9qUatRToWgM-sKgSIg0vgHGj9ohZ8kCV1wa1wSedHUXpCqss7PLbEEtnZsJpYjQmEn4mcrLR313dTfXxUMZ8uu9OJrl4fPzM4340rnyq1kiRZToZpxWd7T9LdJu_uUJ-I1qD8NQFc1Q3d9rtaLKzcHTxxEe3NQlNycBxdGtVgiPXQlm6BxRl_rRluF34oGRv-IJN6WzSnZx0DLwdMUIHdPOYh2aJlzu5zYFSUsmRl0ClCKQLy7oPO2qNn5-GbdvsJtoHmvVrp7WGu4mTFKf5F169L3TPYn2Ri10DbUYINXwuu21DZJ7ZeGeBxW14IBBHYZ0E1BuxqfzKjYwuv63rQD9a5nI3LZDYzzrLi3czJfHBU9724VYNhsBj-_JBrbR_secEhJWI3hX307Rfiety980esWPJusGwpOyOvrg70XR5vIrCCYO56wuvBwhmcGE4IdmOHHwfT_F8ymedUwBx8HM-gYJto9oQ4HeyWtdftA8sxka-JFMnm97nYkTY2C_r41qjZtq4aa8fVx1eerQjymrSXDIz--c7b_o7P-At8zCQE=',
+        'umlet'),
   ];
-
 }

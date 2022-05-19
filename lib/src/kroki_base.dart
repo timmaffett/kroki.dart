@@ -67,11 +67,11 @@ class KrokiDiagramEndpoints {
 
   static const List<String> supportedEndpoints = [
     blockdiag,
-    seqdiag,   //
-    actdiag,   //
-    nwdiag,    // these all other types for `blockdiag` 
-    packetdiag,//
-    rackdiag,  //
+    seqdiag, //
+    actdiag, //
+    nwdiag, // these all other types for `blockdiag`
+    packetdiag, //
+    rackdiag, //
     vega,
     vegalite,
     excalidraw,
@@ -81,7 +81,7 @@ class KrokiDiagramEndpoints {
     pikchr,
     plantuml,
     graphviz,
-    dot,   // alternate for `graphviz`
+    dot, // alternate for `graphviz`
     bytefield,
     wavedrom,
     c4plantuml,
@@ -90,7 +90,7 @@ class KrokiDiagramEndpoints {
     nomnoml,
     structurizr,
     umlet,
-    diagramsDotNet,  // endpoint not on public kroki.io site as of 5/19/22
+    diagramsDotNet, // endpoint not on public kroki.io site as of 5/19/22
   ];
 }
 
@@ -130,8 +130,7 @@ class Kroki {
 
   String? _getEndpointFromDiagramType(String diagramType) {
     diagramType = diagramType.toLowerCase();
-    if (KrokiDiagramEndpoints.supportedEndpoints
-        .contains(diagramType)) {
+    if (KrokiDiagramEndpoints.supportedEndpoints.contains(diagramType)) {
       return diagramType;
     }
     return null;
@@ -140,8 +139,9 @@ class Kroki {
   Future<String> convertDiagram(
       String diagramType, String diagramSource) async {
     final String? endpoint = _getEndpointFromDiagramType(diagramType);
-    if (endpoint == null)
+    if (endpoint == null) {
       return 'Unsupported Kroki Diagram Endpoint "$diagramType"';
+    }
 
     final String md5 = cacheRequests ? generateMd5(diagramSource) : '';
     if (cacheRequests && cache.containsKey(md5)) {
